@@ -1,0 +1,50 @@
+version: "3.1"
+
+stories:
+  - story: happy path
+    steps:
+      - intent: saludo
+      - action: utter_saludo
+      - intent: mood_happy
+      - action: utter_happy
+
+  - story: habla tratamiento
+    steps:
+      - intent: tratamiento
+      - action: utter_tratamiento
+
+  - story: sad path 1
+    steps:
+      - intent: saludo
+      - action: utter_saludo
+      - intent: mood_unhappy
+      - action: utter_cheer_up
+      - action: utter_did_that_help
+      - intent: afirmacion
+      - action: utter_happy
+
+  - story: sad path 2
+    steps:
+      - intent: despedida
+      - action: utter_despedida
+      - intent: mood_unhappy
+      - action: utter_cheer_up
+      - action: utter_did_that_help
+      - intent: negacion
+      - action: utter_happy
+
+  - story: tiempo path 1
+    steps:
+      - intent: tiempo
+      - action: utter_tiempo
+      - intent: mood_unhappy
+      - action: utter_cheer_up
+
+  - story: tiempo path 2
+    steps:
+      - intent: tiempo
+      - action: utter_tiempo
+      - intent: mood_happy
+      - action: utter_consulta_horarios
+      - intent: afirmacion
+      - action: utter_apoyo

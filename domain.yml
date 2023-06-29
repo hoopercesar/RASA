@@ -1,0 +1,63 @@
+version: "3.1"
+
+intents:
+  - saludo
+  - despedida
+  - afirmacion
+  - negacion
+  - mood_happy
+  - mood_unhappy
+  - bot_challenge
+  - tratamiento
+  - tiempo
+
+responses:
+  utter_tratamiento:
+    - text: "el tratamiento va bien. debes tener paciencia "
+
+  utter_tiempo:
+    - text: "falta poco tiempo, vas bien"
+    - text: "Sólo unos días más. Déjame ver cuánto te falta"
+    - text: "Hey!, continúa con el tratamiento, la paciencia es la madre de todos los frutos"
+
+  utter_saludo:
+    - text: "Hola {name}, cómo estás?"
+    - text: "Hola {name}, qué tal te va?"
+    - text: "Qué tal, {name}! Cómo va tu día?"
+
+  utter_cheer_up:
+    - text: "Anímate, dentro de poco estarás como nuevo"
+    - text: "No te eches a morir. Vas a salir bien de ésta"
+
+  utter_did_that_help:
+    - text: "Did that help you?"
+
+  utter_happy:
+    - text: "Qué bueno, me alegro!!"
+    - text: "Estupendo!!"
+    - text: "Genial. Qué alegría oirte decirlo!"
+
+  utter_despedida:
+    - text: "Adiós"
+    - text: "Hasta la próxima"
+    - text: "Espero saber pronto de tí"
+    - text: "Chao, chao"
+    - text: "Nos vemos ;)"
+
+  utter_iamabot:
+    - text: "I am a bot, powered by Rasa."
+
+  utter_consulta_horarios:
+    - text: "Has tomado las medicina a las horas establecidas?"
+
+  utter_apoyo:
+    - text: "muy bien. sigue así, a no decaer!"
+    - text: "Excelente. Hay que ser disciplinado con el tratamiento"
+    - text: "Si sigues así, dentro de muy poco estarás como nuevo"
+
+actions:
+  - action_hello_world
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

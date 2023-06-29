@@ -1,0 +1,97 @@
+version: "3.1"
+
+nlu:
+  - intent: saludo
+    examples: |
+      - hola
+      - kiubo
+      - que tal!
+      - como estás?
+      - buenos días
+      - buenas
+      - hola, hola
+      - y ahí
+      - todo bien?
+      - hola, weón
+      - qué hubo, cumpita
+      - cómo estamos
+      - buenas tardes
+
+  - intent: tiempo
+    examples: |
+      - cuánto tiempo falta?
+      - cuántos días quedan?
+      - falta mucho?
+      - cuándo termina el tratamiento?
+
+  - intent: despedida
+    examples: |
+      - chao
+      - nos vemos
+      - hasta pronto
+      - hasta mañana
+      - buenas noches
+      - adios
+      - que estés bien
+      - chaíto
+      - ahí te ves
+      - chavela
+      - te cuidas
+
+  - intent: afirmacion
+    examples: |
+      - sí
+      - así es
+      - naturalmente
+      - por supuesto
+      - correcto
+      - afirmativo
+
+  - intent: negacion
+    examples: |
+      - no
+      - éso es incorrecto
+      - nunca
+      - no creo
+      - de ningún modo
+      - imposible
+      - por supuesto que n
+
+  - intent: mood_happy
+    examples: |
+      - perfecto
+      - genial
+      - maravilloso
+      - me siento como un rey
+      - la raja
+      - muy bien
+      - excelente
+      - estoy muy bien
+      - voy a salvar el mundo
+      - satisfecho
+      - ai fil gud, bro
+      - tan tan bien
+      - magnifico
+      - demasiado bien
+
+  - intent: mood_unhappy
+    examples: |
+      - puta la weá
+      - qué penca. penca!
+      - shusha
+      - me fui a la shusha
+      - fome la weá
+      - pfff
+      - una mierda!
+
+  - intent: bot_challenge
+    examples: |
+      - are you a bot?
+      - are you a human?
+      - am I talking to a bot?
+      - am I talking to a human?
+
+  - intent: tratamiento
+    examples: |
+      - como va mi tratamiento
+      - cuanto dura el tratamiento

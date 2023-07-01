@@ -48,3 +48,37 @@ stories:
       - action: utter_consulta_horarios
       - intent: afirmacion
       - action: utter_apoyo
+
+  - story: give name story 1
+    steps:
+      - intent: pregunta_algo
+      - action: utter_pregunta_numero_telefono
+      - intent: entregar_numero_telefono
+        entities:
+          - numero_telefono: 123456789
+      - slot_was_set:
+          - numero_telefono: 123456789
+      - action: utter_remember
+      - intent: repite_numero_telefono
+      - action: action_di_numero_telefono
+      - intent: despedida
+      - action: utter_despedida
+
+  - story: give name story 2
+    steps:
+      - intent: saludo
+      - action: utter_saludo
+      - intent: repite_numero_telefono
+      - action: action_di_numero_telefono
+      - intent: pregunta_algo
+      - action: utter_pregunta_numero_telefono
+      - intent: entregar_numero_telefono
+        entities:
+          - numero_telefono: 123456789
+      - slot_was_set:
+          - numero_telefono: 123456789
+      - action: utter_remember
+      - intent: repite_numero_telefono
+      - action: action_di_numero_telefono
+      - intent: despedida
+      - action: utter_despedida

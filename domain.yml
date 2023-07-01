@@ -10,8 +10,28 @@ intents:
   - bot_challenge
   - tratamiento
   - tiempo
+  - pregunta_algo
+  - repite_numero_telefono
+  - entregar_numero_telefono
+
+entities:
+  - numero_telefono
+
+slots:
+  numero_telefono:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: numero_telefono
 
 responses:
+  utter_pregunta_numero_telefono:
+    - text: "me das tu teléfono?"
+    - text: "cuál es tu número de teléfono?"
+    - text: "podrías darme tu número telefónico, por favor?"
+    - text: "necesito tu número de teléfono"
+
   utter_tratamiento:
     - text: "el tratamiento va bien. debes tener paciencia "
 
@@ -55,8 +75,12 @@ responses:
     - text: "Excelente. Hay que ser disciplinado con el tratamiento"
     - text: "Si sigues así, dentro de muy poco estarás como nuevo"
 
+  utter_remember:
+    - text: "Ok. lo recordaré"
+    - text: "Guardado. Gracias"
+
 actions:
-  - action_hello_world
+  - action_di_numero_telefono
 
 session_config:
   session_expiration_time: 60

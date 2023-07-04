@@ -49,36 +49,56 @@ stories:
       - intent: afirmacion
       - action: utter_apoyo
 
-  - story: give name story 1
-    steps:
-      - intent: pregunta_algo
-      - action: utter_pregunta_numero_telefono
-      - intent: entregar_numero_telefono
-        entities:
-          - numero_telefono: 123456789
-      - slot_was_set:
-          - numero_telefono: 123456789
-      - action: utter_remember
-      - intent: repite_numero_telefono
-      - action: action_di_numero_telefono
-      - intent: despedida
-      - action: utter_despedida
+  # - story: give name story 1
+  #   steps:
+  #     - intent: pregunta_algo
+  #     - action: utter_pregunta_numero_telefono
+  #     - intent: entregar_numero_telefono
+  #       entities:
+  #         - numero_telefono: 123456789
+  #     - slot_was_set:
+  #         - numero_telefono: 123456789
+  #     - action: utter_remember
+  #     - intent: repite_numero_telefono
+  #     - action: action_di_numero_telefono
+  #     - intent: despedida
+  #     - action: utter_despedida
 
-  - story: give name story 2
+  # - story: give name story 2
+  #   steps:
+  #     - intent: saludo
+  #     - action: utter_saludo
+  #     - intent: repite_numero_telefono
+  #     - action: action_di_numero_telefono
+  #     - intent: pregunta_algo
+  #     - action: utter_pregunta_numero_telefono
+  #     - intent: entregar_numero_telefono
+  #       entities:
+  #         - numero_telefono: 123456789
+  #     - slot_was_set:
+  #         - numero_telefono: 123456789
+  #     - action: utter_remember
+  #     - intent: repite_numero_telefono
+  #     - action: action_di_numero_telefono
+  #     - intent: despedida
+  #     - action: utter_despedida
+
+  - story: interactive story 1
     steps:
       - intent: saludo
       - action: utter_saludo
-      - intent: repite_numero_telefono
-      - action: action_di_numero_telefono
-      - intent: pregunta_algo
-      - action: utter_pregunta_numero_telefono
-      - intent: entregar_numero_telefono
-        entities:
-          - numero_telefono: 123456789
+      - intent: pregunta_datos
+      - action: name_form
       - slot_was_set:
-          - numero_telefono: 123456789
-      - action: utter_remember
-      - intent: repite_numero_telefono
-      - action: action_di_numero_telefono
-      - intent: despedida
-      - action: utter_despedida
+          - requested_slot: nombre
+      - slot_was_set:
+          - nombre: getulio
+      - slot_was_set:
+          - requested_slot: apellido
+      - slot_was_set:
+          - apellido: getulio-petros
+      - slot_was_set:
+          - requested_slot: null
+      - active_loop: null
+      - action: utter_submit
+      - action: utter_slots_values

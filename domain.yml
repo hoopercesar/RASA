@@ -10,11 +10,17 @@ intents:
   - bot_challenge
   - tratamiento
   - tiempo
-  - pregunta_algo
+  - pregunta_datos
   - repite_numero_telefono
   - entregar_numero_telefono
 
+# entities:
+#   - numero_telefono
+
+# para intercamiar más entities con el bot usaremos forms
 entities:
+  - nombre
+  - apellido
   - numero_telefono
 
 slots:
@@ -22,15 +28,59 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-      - type: from_entity
-        entity: numero_telefono
-
+      - type: from_text
+        conditions:
+          - active_loop: name_form
+            requested_slot: numero_telefono
+  nombre:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: name_form
+            requested_slot: nombre
+  apellido:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: name_form
+            requested_slot: apellido
+forms:
+  name_form:
+    required_slots:
+      - nombre
+      - apellido
+      - numero_telefono
 responses:
   utter_pregunta_numero_telefono:
-    - text: "me das tu teléfono?"
-    - text: "cuál es tu número de teléfono?"
-    - text: "podrías darme tu número telefónico, por favor?"
-    - text: "necesito tu número de teléfono"
+    - text: "{nombre} {apellido} me das tu teléfono?"
+    - text: "cuál es tu número de teléfono, {nombre} {apellido}?"
+    - text: "{nombre} {apellido}, podrías darme tu número telefónico, por favor?"
+    - text: "necesito tu número de teléfono, {nombre} {apellido}"
+
+  utter_pregunta_nombre:
+    - text: "Cuál es tu nombre?"
+    - text: "me podrías decir tu nombre?"
+    - text: "escriba su nombre"
+    - text: "nombre: "
+    - text: "su nombre: "
+
+  utter_pregunta_apellido:
+    - text: "Hola {nombre}, cuál es tu apellido?"
+    - text: "Un gusto {nombre}, y su apellido es?"
+    - text: "{nombre}, dame tu apellido"
+    - text: "Qué tal {nombre}. Ahora necesito tu apellido"
+
+  utter_submit:
+    - text: "Gracias."
+
+  utter_slots_values:
+    - text: "Tengo tus datos {nombre} {apellido}, y tu teléfono {numero_telefono}"
+    - text: "Datos guardados, {nombre} {apellido}, teléfono {numero_telefono}"
+    - text: "Aquí están tus datos: {nombre} {apellido}, {numero_telefono} es tu teléfono"
 
   utter_tratamiento:
     - text: "el tratamiento va bien. debes tener paciencia "
@@ -41,9 +91,9 @@ responses:
     - text: "Hey!, continúa con el tratamiento, la paciencia es la madre de todos los frutos"
 
   utter_saludo:
-    - text: "Hola {name}, cómo estás?"
-    - text: "Hola {name}, qué tal te va?"
-    - text: "Qué tal, {name}! Cómo va tu día?"
+    - text: "Hola {nombre}, cómo estás?"
+    - text: "Hola {nombre}, qué tal te va?"
+    - text: "Qué tal, {nombre}! Cómo va tu día?"
 
   utter_cheer_up:
     - text: "Anímate, dentro de poco estarás como nuevo"
@@ -81,6 +131,7 @@ responses:
 
 actions:
   - action_di_numero_telefono
+  # - action_di_numero_telefono
 
 session_config:
   session_expiration_time: 60

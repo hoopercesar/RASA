@@ -96,24 +96,35 @@ nlu:
       - como va mi tratamiento
       - cuanto dura el tratamiento
 
-  - intent: pregunta_algo
+  - intent: pregunta_datos
     examples: |
-      - pregunta algo
-      - quieres preguntar algo?
-      - pregunta lo que quieras.
-      - qué quieres preguntar?
-      - siéntete libre de hacer preguntas
+      - quiero darte mis datos
+      - necesitas alguna información mia?
+      - mis datos
+      - sabes mis datos?
+      - necesitas algún dato mio?
+      - qué información necesitas?
+      - alguna información mia que te pueda aportar?
+      - pregunta por los datos que necesites
 
-  - intent: repite_numero_telefono
-    examples: |
-      - cuál es mi teléfono?
-      - recuerdas mi teléfono?
-      - repite mi número telefónico?
-      - sabes mi teléfono?
+  # - intent: pregunta_algo
+  #   examples: |
+  #     - pregunta algo
+  #     - quieres preguntar algo?
+  #     - pregunta lo que quieras.
+  #     - qué quieres preguntar?
+  #     - siéntete libre de hacer preguntas
 
-  - intent: entregar_numero_telefono
-    examples: |
-      - mi teléfono es [123456789](numero_telefono)
-      - [987654321](numero_telefono) 
-      - este es mi número [234129874](numero_telefono)
-      - este es [453906753](numero_telefono)
+  # - intent: repite_numero_telefono
+  #   examples: |
+  #     - cuál es mi teléfono?
+  #     - recuerdas mi teléfono?
+  #     - repite mi número telefónico?
+  #     - sabes mi teléfono?
+
+  # - intent: entregar_numero_telefono
+  #   examples: |
+  #     - mi teléfono es [123456789](numero_telefono)
+  #     - [987654321](numero_telefono)
+  #     - este es mi número [234129874](numero_telefono)
+  #     - este es [453906753](numero_telefono)

@@ -1,91 +1,123 @@
 version: "3.1"
 
 nlu:
-- intent: greet
-  examples: |
-    - hey
-    - hello
-    - hi
-    - hello there
-    - good morning
-    - good evening
-    - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
+  - intent: greet
+    examples: |
+      - hola
+      - kiubo
+      - que tal!
+      - como estás?
+      - buenos días
+      - buenas
+      - hola, hola
+      - y ahí
+      - todo bien?
+      - hola, weón
+      - qué hubo, cumpita
+      - cómo estamos
+      - buenas tardes
 
-- intent: goodbye
-  examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
+  - intent: goodbye
+    examples: |
+      - chao
+      - nos vemos
+      - hasta pronto
+      - hasta mañana
+      - buenas noches
+      - adios
+      - que estés bien
+      - chaíto
+      - ahí te ves
+      - chavela
+      - te cuidas
 
-- intent: affirm
-  examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
+  - intent: affirm
+    examples: |
+      - sí
+      - así es
+      - naturalmente
+      - por supuesto
+      - correcto
+      - afirmativo
 
-- intent: deny
-  examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
+  - intent: deny
+    examples: |
+      - no
+      - éso es incorrecto
+      - nunca
+      - no creo
+      - de ningún modo
+      - imposible
+      - por supuesto que n
 
-- intent: mood_great
-  examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
+  - intent: mood_great
+    examples: |
+      - perfecto
+      - genial
+      - maravilloso
+      - me siento como un rey
+      - la raja
+      - muy bien
+      - excelente
+      - estoy muy bien
+      - voy a salvar el mundo
+      - satisfecho
+      - ai fil gud, bro
+      - tan tan bien
+      - magnifico
+      - demasiado bien
 
-- intent: mood_unhappy
-  examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
+  - intent: mood_unhappy
+    examples: |
+      - pésimo
+      - mal. muy mal
+      - estoy tan triste
+      - estoy muy mal
+      - me siento muy triste
+      - estoy bajoneado
+      - lo estoy pasando pésimo
+      - no me siento bien
+      - estoy desilucionado.
+      - mi día estuvo horrible.
+      - tuve un pésimo día
+      - me siento sin esperanza
+      - estoy desmotivado y triste
+      - no estoy de ánimo
+      - estoy desanimado
+      - no tengo ganas de nada.
+      - estoy desganado
 
-- intent: bot_challenge
-  examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+  - intent: bot_challenge
+    examples: |
+      - eres un robot?
+      - eres una persona?
+      - eres humano?
+      - estoy hablando con un robot?
+      - estoy hablando con una persona?
+
+  # este intent es el que gatilla el formulario para pedir la pizza
+  - intent: buy_pizza
+    examples: |
+      - quiero una pizza.
+      - quiero comprar pizza
+      - estoy interesado en una sabrosa masa plana con queso derretido 
+      - será que puedo pedir pizza?
+      - me vende pizza
+      - quedan masas planas rellenas con queso y calabresa?
+
+  - intent: inform
+    examples: |
+      - me gustaría una pizza [grande](pizza_size)
+      - quiero una pizza [chica](pizza_size)
+      - [mediana](pizza_size)
+      - [vegana](pizza_type)
+      - quiero una pizza [mediana][pizza_size] de [calabresa](pizza_type)
+      - una [grane](pizza_size) [italiana](pizza_type)
+      - me podría enviar una [grande](pizza_size) de [calabresa](pizza_type)
+      - una [chica](pizza_size) de [chocolate](pizza_type)
+      - una de [frutillas](pizza_type) y de tamaño [mediano](pizza_size)
+      - [pequeña](pizza_size) y de [chocolate](pizza_type)
+      - una pizza [pediana](pizza_size) de [carabreza](pizza_type)
+      - una [grande](pizza_size) de [mariscos](pizza_type)
+      - tendría la amabilidad de traerme una deliciosa pizza de [frutillas](pizza_type)
+      - [grande](pizza_size) de [queso](pizza_type)

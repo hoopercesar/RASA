@@ -1,137 +1,85 @@
 version: "3.1"
 
 intents:
-  - saludo
-  - despedida
-  - afirmacion
-  - negacion
-  - mood_happy
+  - buy_pizza
+  - inform
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
   - mood_unhappy
   - bot_challenge
-  - tratamiento
-  - tiempo
-  - pregunta_datos
-  - repite_numero_telefono
-  - entregar_numero_telefono
+  - request_pizza_form
 
-# entities:
-#   - numero_telefono
-
-# para intercamiar más entities con el bot usaremos forms
 entities:
-  - nombre
-  - apellido
-  - numero_telefono
+  - pizza_size
+  - pizza_type
 
 slots:
-  numero_telefono:
+  pizza_size:
     type: text
     influence_conversation: true
     mappings:
-      - type: from_text
-        conditions:
-          - active_loop: name_form
-            requested_slot: numero_telefono
-  nombre:
+      - type: from_entity
+        entity: pizza_size
+  pizza_type:
     type: text
     influence_conversation: true
     mappings:
-      - type: from_text
-        conditions:
-          - active_loop: name_form
-            requested_slot: nombre
-  apellido:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_text
-        conditions:
-          - active_loop: name_form
-            requested_slot: apellido
+      - type: from_entity
+        entity: pizza_type
 forms:
-  name_form:
+  simple_pizza_form:
     required_slots:
-      - nombre
-      - apellido
-      - numero_telefono
+      - pizza_size
+      - pizza_type
+
 responses:
-  utter_pregunta_numero_telefono:
-    - text: "{nombre} {apellido} me das tu teléfono?"
-    - text: "cuál es tu número de teléfono, {nombre} {apellido}?"
-    - text: "{nombre} {apellido}, podrías darme tu número telefónico, por favor?"
-    - text: "necesito tu número de teléfono, {nombre} {apellido}"
-
-  utter_pregunta_nombre:
-    - text: "Cuál es tu nombre?"
-    - text: "me podrías decir tu nombre?"
-    - text: "escriba su nombre"
-    - text: "nombre: "
-    - text: "su nombre: "
-
-  utter_pregunta_apellido:
-    - text: "Hola {nombre}, cuál es tu apellido?"
-    - text: "Un gusto {nombre}, y su apellido es?"
-    - text: "{nombre}, dame tu apellido"
-    - text: "Qué tal {nombre}. Ahora necesito tu apellido"
-
-  utter_submit:
-    - text: "Gracias."
-
-  utter_slots_values:
-    - text: "Tengo tus datos {nombre} {apellido}, y tu teléfono {numero_telefono}"
-    - text: "Datos guardados, {nombre} {apellido}, teléfono {numero_telefono}"
-    - text: "Aquí están tus datos: {nombre} {apellido}, {numero_telefono} es tu teléfono"
-
-  utter_tratamiento:
-    - text: "el tratamiento va bien. debes tener paciencia "
-
-  utter_tiempo:
-    - text: "falta poco tiempo, vas bien"
-    - text: "Sólo unos días más. Déjame ver cuánto te falta"
-    - text: "Hey!, continúa con el tratamiento, la paciencia es la madre de todos los frutos"
-
-  utter_saludo:
-    - text: "Hola {nombre}, cómo estás?"
-    - text: "Hola {nombre}, qué tal te va?"
-    - text: "Qué tal, {nombre}! Cómo va tu día?"
+  utter_greet:
+    - text: "Hey! Cómo estás?"
+    - text: "Hola, todo bien?"
+    - text: "Gusto saludarte. Cómo has estado?"
 
   utter_cheer_up:
-    - text: "Anímate, dentro de poco estarás como nuevo"
-    - text: "No te eches a morir. Vas a salir bien de ésta"
+    - text: "No te desanimes!!"
+    - text: "Arriba ese ánimo!"
 
   utter_did_that_help:
-    - text: "Did that help you?"
+    - text: "Te sirvió esa ayuda?"
 
   utter_happy:
-    - text: "Qué bueno, me alegro!!"
-    - text: "Estupendo!!"
-    - text: "Genial. Qué alegría oirte decirlo!"
+    - text: "Excelente. Sigue así"
+    - text: "Me alegro mucho"
 
-  utter_despedida:
-    - text: "Adiós"
-    - text: "Hasta la próxima"
-    - text: "Espero saber pronto de tí"
-    - text: "Chao, chao"
-    - text: "Nos vemos ;)"
+  utter_goodbye:
+    - text: "Chao"
+    - text: "Hasta pronto"
+    - text: "Hablamos luego"
 
   utter_iamabot:
-    - text: "I am a bot, powered by Rasa."
+    - text: "Soy un robot generado por Rasa."
 
-  utter_consulta_horarios:
-    - text: "Has tomado las medicina a las horas establecidas?"
+  utter_submit:
+    - text: "Su pizza ya fue ordenada. Gracias"
+    - text: "Hemos recibido su orden. Pronto se la entregaremos"
 
-  utter_apoyo:
-    - text: "muy bien. sigue así, a no decaer!"
-    - text: "Excelente. Hay que ser disciplinado con el tratamiento"
-    - text: "Si sigues así, dentro de muy poco estarás como nuevo"
+  utter_pizza_slots:
+    - text: "Su pedido es una pizza {pizza_size} de {pizza_type}"
+    - text: "Entonces, una {pizza_type} {pizza_size}"
 
-  utter_remember:
-    - text: "Ok. lo recordaré"
-    - text: "Guardado. Gracias"
+  utter_ask_pizza_size:
+    - text: "de qué tamaño quiere su pizza?"
+    - text: "qué tamaño de pizza sería: grande, mediana o pequeña?"
+    - text: "la pizza será chica, mediana o grande?"
+
+  utter_ask_pizza_type:
+    - text: "cuál pizza desea?"
+    - text: "qué tipo de pizza le gustaría comprar?"
+    - text: "dígame, cuál pizza quiere?"
 
 actions:
-  - action_di_numero_telefono
-  # - action_di_numero_telefono
+  - validate_simple_pizza_form
 
 session_config:
   session_expiration_time: 60

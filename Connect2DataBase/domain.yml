@@ -2,32 +2,65 @@ version: "3.1"
 
 intents:
   - greet
+  - inform
   - goodbye
   - affirm
   - deny
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - request_rut_form
+
+entities:
+  - rut
+
+slots:
+  rut:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: rut
+
+forms:
+  rut_form:
+    required_slots:
+      - rut
 
 responses:
+  utter_ask_rut:
+    - text: "Me da su número de rut (12345678-9)"
+    - text: "Necesito su rut (12345678-9)"
+    - text: "Cuál es su rut (12345678-9)"
+
+  utter_rut_slots:
+    - text: "Información recibida. RUT: {rut}"
+
   utter_greet:
-  - text: "Hey! How are you?"
+    - text: "hola, cómo estás"
 
   utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+    - text: "Here is something to cheer you up:"
+      image: "https://i.imgur.com/nGF1K8f.jpg"
 
   utter_did_that_help:
-  - text: "Did that help you?"
+    - text: "Did that help you?"
 
   utter_happy:
-  - text: "Great, carry on!"
+    - text: "Great, carry on!"
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Bye"
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+    - text: "I am a bot, powered by Rasa."
+
+  utter_submit:
+    - text: "Gracias. Aguarde unos instantes..."
+    - text: "Estoy procesando su información"
+
+actions:
+  - validate_rut
 
 session_config:
   session_expiration_time: 60

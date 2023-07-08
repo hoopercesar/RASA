@@ -1,0 +1,30 @@
+version: "3.1"
+
+rules:
+  - rule: Say goodbye anytime the user says goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - rule: Say 'I am a bot' anytime the user challenges
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
+
+  # el bot pedirá el rut apenas lo saluden
+  - rule: Activate rut form
+    steps:
+      - intent: greet
+      - action: rut_form
+      - active_loop: rut_form
+
+  - rule: Submit rut form
+    condition:
+      - active_loop: rut_form
+    steps:
+      - action: rut_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: utter_submit
+      - action: utter_rut_slots

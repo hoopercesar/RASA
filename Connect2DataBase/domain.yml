@@ -29,7 +29,7 @@ forms:
 
 responses:
   utter_ask_rut:
-    - text: "Me da su número de rut (12345678-9)"
+    - text: "Digite su rut (12345678-9)"
     - text: "Necesito su rut (12345678-9)"
     - text: "Cuál es su rut (12345678-9)"
 
@@ -60,7 +60,7 @@ responses:
     - text: "Estoy procesando su información"
 
 actions:
-  - validate_rut
+  - validate_rut_form
 
 session_config:
   session_expiration_time: 60

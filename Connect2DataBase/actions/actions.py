@@ -49,7 +49,7 @@ class ValidateRut(FormValidationAction):
             return {'rut': None}
         else:
             usuario = self.get_user_info(slot_value)
-            dispatcher.utter_message(text=f"{slot_value} rut reconocido")
-            return {'rut': 'POTO'}
+            dispatcher.utter_message(text=f"{slot_value} es un usuario activo")
+            return {'rut': usuario}
         
     

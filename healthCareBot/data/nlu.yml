@@ -1,0 +1,53 @@
+version: "3.1"
+
+nlu:
+  - intent: inform
+    examples: |
+      - mi rut es [123456789](rut)
+      - éste es [2930945782](rut)
+      - [4396850395](rut)
+      - aquí está [5483729558](rut)
+      - sí, [2109575832](rut)
+
+  - intent: greet
+    examples: |
+      - hola
+      - Hola, qué tal.
+      - buen día
+
+  - intent: goodbye
+    examples: |
+      - chao
+      - adios
+      - hasta luego
+
+  - intent: affirm
+    examples: |
+      - sí
+      - claro
+
+  - intent: deny
+    examples: |
+      - no
+      - negativo
+      - de ningún modo
+
+  - intent: mood_great
+    examples: |
+      - genial
+      - muy bien
+
+  - intent: mood_confuse
+    examples: |
+      - aquí
+      - más o menos
+
+  - intent: mood_unhappy
+    examples: |
+      - ando triste
+      - me siento bajoneado
+
+  - intent: bot_challenge
+    examples: |
+      - con quién hablo?
+      - quién eres?

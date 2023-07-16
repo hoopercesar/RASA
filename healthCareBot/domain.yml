@@ -9,25 +9,33 @@ intents:
   - mood_unhappy
   - bot_challenge
 
+entities:
+  - rut
+  - tratamiento
+  - iniciar_tratamiento
+
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+    - text: "Hola, qué tal? Soy tu asistente virtual. Podría digitar su Rut (ej. 111222333-4)"
+    - text: "Qué tal. Por favor, escriba su Rut (ej. 111222333-4)"
+    - text: "Qué gusto! Cuál es su Rut (ej. 111222333-K)"
 
   utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+    - text: "Quiéres contarme cuáles son tus síntomas"
 
   utter_did_that_help:
-  - text: "Did that help you?"
+    - text: "Ha sido de ayuda?"
 
   utter_happy:
-  - text: "Great, carry on!"
+    - text: "Bien... excelente"
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Hasta la próxima"
+    - text: "Mantente en contacto. Chao"
+    - text: "Estaré aquí para lo que necesites. Hasta pronto"
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+    - text: "Soy una asistente virtual. Estoy aquí para ayudar en tu tratamiento"
 
 session_config:
   session_expiration_time: 60

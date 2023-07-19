@@ -1,13 +1,53 @@
 version: "3.1"
 
 rules:
+  # el bot pedirá rut apenas lo daluden
+  - rule: Activate rut form
+    steps:
+      - intent: greet
+      - action: rut_form
+      - active_loop: rut_form
 
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  - rule: Submit rut form
+    condition:
+      - active_loop: rut_form
+    steps:
+      - action: rut_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: utter_submit
+      - action: utter_rut_slots
 
-- rule: Say 'I am a bot' anytime the user challenges
-  steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+  # - rule: Activate tratamiento form
+  #   steps:
+  #     - intent: ask_tratamiento
+  #     - action: tratamiento_form
+  #     - activate_loop: tratamiento_form
+
+  # - rule: Submit tratamiento form
+  #   condition:
+  #     - active_loop: tratamiento_form
+  #   steps:
+  #     - action: rut_form
+  #     - active_loop: null
+  #     - slot_was_set:
+  #       - requested_slot: null
+  #     - action: utter_submit
+  #     - action: utter_tratamiento_slots
+
+  #   steps:
+  #     - action: rut_form
+  #     - active_loop: null
+  #     - slot_was_set:
+  #       - requested_slot:
+
+  - rule: Say goodbye anytime the user says goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - rule: Say 'I am a bot' anytime the user challenges
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot

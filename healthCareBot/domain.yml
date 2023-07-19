@@ -8,11 +8,48 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - inform_rut
+  - request_rut_form
+  # - request_tratamiento_form
+  # - request_horarios_form
 
 entities:
   - rut
-  - tratamiento
-  - iniciar_tratamiento
+  # - tratamiento
+  # - horarios
+
+slots:
+  rut:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: rut
+  # tratamiento:
+  #   type: text
+  #   influence_conversation: true
+  #   mappings:
+  #     - type: from_entity
+  #       entity: tratamiento
+  # horarios:
+  #   type: text
+  #   influence_conversation: true
+  #   mappings:
+  #     - type: from_entity
+  #       entity: horarios
+
+forms:
+  rut_form:
+    required_slots:
+      - rut
+
+  # tratamiento_form:
+  #   required_slots:
+  #     - tratamiento
+
+  # horarios_form:
+  #   required_slots:
+  #     - horarios
 
 responses:
   utter_greet:
@@ -40,3 +77,6 @@ responses:
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
+
+actions:
+  - validate_rut_form

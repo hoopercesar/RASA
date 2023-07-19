@@ -1,7 +1,7 @@
 version: "3.1"
 
 nlu:
-  - intent: inform
+  - intent: inform_rut
     examples: |
       - mi rut es [123456789](rut)
       - éste es [2930945782](rut)

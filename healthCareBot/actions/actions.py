@@ -73,3 +73,14 @@ class ValidateRut(FormValidationAction):
             nombre = usuario['nombre']
             dispatcher.utter_message(template="utter_rut_slots", nombre=nombre)
             return []
+
+# para obtener información del tratamiento. 
+# medicinas, dosis y frecuencia diaria
+class Tratamiento():
+    
+    def __init__(self):
+        return "retorna_tratamiento"
+    
+        
+
+# esta clase crea y administra los horarios de cada medicina

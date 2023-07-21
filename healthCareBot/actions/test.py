@@ -67,6 +67,8 @@ class ValidateRut():
         else:
             return self.rut_db(self, self.rut)
 
+#### Clase diagnóstico y tratamiento #####
+
 class Tratamiento(ValidateRut):
     def __init__(self, rut):
   
@@ -75,6 +77,13 @@ class Tratamiento(ValidateRut):
     path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
     con = sqlite3.connect(path, check_same_thread=False)
     cur = con.cursor()
+
+    @staticmethod
+    def keylist(dicc):
+        keylist = []
+        for k in dicc:
+            keylist.append(k)    
+        return keylist   
     
     # cur.execute("SELECT diagnostico FROM tratamiento WHERE userID=?", (userID, ))
     # userInfo = cur.fetchall()
@@ -83,16 +92,70 @@ class Tratamiento(ValidateRut):
         val = ValidateRut(rut)
         return val.validate_rut()['userID']
 
-    def tratamiento(self):
+    def diagnosticos(self):
         userID = self.userID(self.rut)
         path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
         con = sqlite3.connect(path, check_same_thread=False)
         cur = con.cursor()
         cur.execute("SELECT diagnostico FROM tratamiento WHERE userID=?", (userID, ))
-        userInfo = cur.fetchall()
+        userInfo = json.loads(cur.fetchall()[0][0])
 
-        return userInfo
+        diagnosticos = self.keylist(userInfo)
+
+        return diagnosticos
+
+    def medicamentos(self):
+        userID = self.userID(self.rut)
+        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
+        con = sqlite3.connect(path, check_same_thread=False)
+        cur = con.cursor()
+        cur.execute("SELECT diagnostico FROM tratamiento WHERE userID=?", (userID, ))
+        userInfo = json.loads(cur.fetchall()[0][0])
 
         
-t = Tratamiento('13109915-0')         
-print(t.tratamiento())
+        dd = {}
+        for diag in self.diagnosticos():
+            # print(diag, userInfo[diag])
+            dd[diag] = self.keylist(userInfo[diag])
+
+        ## IDEA: CUANDO PACIENTE PREGUNTE POR DIAGNÓSTIO
+        ## EL BOT RESPONDE CON EL MÉTODO DIAGNÓSTICO: UNA LISTA DE LAS ENFERMEDADES...
+        ## CUANDO PACIENTE PREGUNTA POR MEDICAMENTOS, SE ENTREGA LA ENFERMEDAD
+        ## JUNTO CON LA LISTA DE LOS MEDICAMENTOS PARA EL TRATAMIENTO. 
+        return dd
+    
+    def dosis(self):
+        userID = self.userID(self.rut)
+        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
+        con = sqlite3.connect(path, check_same_thread=False)
+        cur = con.cursor()
+        cur.execute("SELECT diagnostico FROM tratamiento WHERE userID=?", (userID, ))
+        userInfo = json.loads(cur.fetchall()[0][0])
+        
+        # self.keylist(userInfo) es la lista de diccionarios de cada medicina con sus dosis
+        # se extrae cada diccionario de medicina (con sus dosis) y se guarda en una sola lista
+        lista = []
+        for diag in self.keylist(userInfo):
+            lista.append(userInfo[diag])
+
+        # lista contiene los diccionarios de las medicinas con sus dosis
+        # ahora, vamor a unir todos esos diccionarios en un solo diccionario dic_final
+        dic_final = {}
+        for dic1 in lista:
+            for sub in dic1:
+                dic_final[sub] = dic1[sub]     
+            
+        return dic_final
+
+    def presentacionDosis(self):
+        '''en el método dosis se extraen las medicinas con sus dosis y se ordenan
+        dentro de un diccionario. sin embargo, esta presentación no es adecuada para el paciente.
+        en este método se presenta la información de manera entendible para el paciente.
+        un mensaje con el nombre de la medicina y la dosis diaria'''
+        return 'algo'
+        
+# fran = 12658439-3
+# amore = 20502458-1
+        
+t = Tratamiento('20502458-1')         
+print(t.dosis())

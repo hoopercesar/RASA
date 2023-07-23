@@ -71,15 +71,18 @@ class ValidateRut(FormValidationAction):
         else:
             usuario = self.rut_db(self, slot_value)
             nombre = usuario['nombre']
-            dispatcher.utter_message(template="utter_rut_slots", nombre=nombre)
-            return []
+            apellido = usuario['apellido']
+            fecha_nac = usuario['fecha_nac']
+            # dispatcher.utter_message(template="utter_rut_slots", nombre=nombre)
+            # dispatcher.utter_message(template="utter_goodbye", nombre=nombre)
+            return {'nombre': nombre, 'apellido': apellido, 'fecha_nac': fecha_nac}
 
 # para obtener información del tratamiento. 
 # medicinas, dosis y frecuencia diaria
-class Tratamiento():
+# class Tratamiento():
     
-    def __init__(self):
-        return "retorna_tratamiento"
+#     def __init__(self):
+#         return "retorna_tratamiento"
     
         
 

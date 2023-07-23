@@ -44,6 +44,7 @@ class ValidateRut():
             dat = json.loads(dato[0])
             if (hashedRut == self.keylist(dat)[0]):
                 paciente = dat[hashedRut]
+                print('PACIENTE', paciente)
                 return paciente
 
         
@@ -157,5 +158,6 @@ class Tratamiento(ValidateRut):
 # fran = 12658439-3
 # amore = 20502458-1
         
-t = Tratamiento('20502458-1')         
-print(t.dosis())
+t = Tratamiento('20502458-1')      
+v = ValidateRut('13109915-0')   
+print(v.validate_rut()['userID'])

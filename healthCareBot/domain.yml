@@ -25,6 +25,21 @@ slots:
     mappings:
       - type: from_entity
         entity: rut
+  nombre:
+    type: text
+    mappings:
+      - type: custom
+        action: validate_rut_form
+  apellido:
+    type: text
+    mappings:
+      - type: custom
+        action: validate_rut_form
+  fecha_nac:
+    type: text
+    mappings:
+      - type: custom
+        action: validate_rut_form
   # tratamiento:
   #   type: text
   #   influence_conversation: true
@@ -67,9 +82,9 @@ responses:
     - text: "Bien... excelente"
 
   utter_goodbye:
-    - text: "Hasta la próxima"
-    - text: "Mantente en contacto. Chao"
-    - text: "Estaré aquí para lo que necesites. Hasta pronto"
+    - text: "Hasta la próxima, {nombre} {apellido}. {fecha_nac}"
+    - text: "Mantente en contacto. Chao, {nombre} {apellido}. {fecha_nac}"
+    - text: "Estaré aquí para lo que necesites, {nombre} {apellido}. Hasta pronto. {fecha_nac}"
 
   utter_iamabot:
     - text: "Soy una asistente virtual. Estoy aquí para ayudar en tu tratamiento"
@@ -79,7 +94,7 @@ responses:
     - text: "Información recibida. Aguarde unos instantes..."
 
   utter_rut_slots:
-    - text: "{nombre}, si quieres revisar tus medicinas, digita tratamiento. Si quieres revisar los horarios digita horarios"
+    - text: "{nombre}, si quieres revisar tus medicinas, digita tratamiento. Si quieres revisar los horarios digita horario"
 
 session_config:
   session_expiration_time: 60

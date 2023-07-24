@@ -1,6 +1,6 @@
 from typing import Any, Text, Dict, List
 
-from rasa_sdk import Action, Tracker
+from rasa_sdk import Action, Tracker, ValidationAction
 from rasa_sdk.forms import FormValidationAction
 from rasa_sdk.events import EventType
 from rasa_sdk.types import DomainDict
@@ -55,6 +55,23 @@ class ValidateRut(FormValidationAction):
                 paciente = dat[hashedRut]
                 return paciente
 
+    @staticmethod
+    async def diagnosticos(self, userID) -> Text:
+        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
+        con = sqlite3.connect(path, check_same_thread=False)
+        cur = con.cursor()
+        cur.execute("SELECT diagnostico FROM tratamiento WHERE userID=?", (userID, ))
+        userInfo = json.loads(cur.fetchall()[0][0])
+        diag= self.keylist(userInfo)
+        texto = ', '.join([d for d in diag])
+        diagnosticos = 'El tratamiento es para: ' + texto
+
+        # diagnosticos = self.keylist(userInfo)
+
+        return diagnosticos
+
+
+
     def validate_rut(                  
         self,
         slot_value: Any,
@@ -65,53 +82,52 @@ class ValidateRut(FormValidationAction):
                 
         """Validate rut value"""
 
+        # print('EN VALIDATE_RUT', self.rut_db(self, slot_value))
+
         if (self.rut_db(self, slot_value) ==  None): 
             dispatcher.utter_message(text=f"{slot_value} Rut no Valido")
             return {'rut': None}
         else:
+            # diagnostico = self.diagnosticos(self, slot_value)
             usuario = self.rut_db(self, slot_value)
             nombre = usuario['nombre']
             apellido = usuario['apellido']
             userID = usuario['userID']
-            # dispatcher.utter_message(template="utter_rut_slots", nombre=nombre)
-            # dispatcher.utter_message(template="utter_goodbye", nombre=nombre)
-            return {'nombre': nombre, 'apellido': apellido, 'userID': userID, 'marte': 'soy marciano'}
+
+            path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
+            con = sqlite3.connect(path, check_same_thread=False)
+            cur = con.cursor()
+            cur.execute("SELECT diagnostico FROM tratamiento WHERE userID=?", (userID, ))
+            userInfo = json.loads(cur.fetchall()[0][0])        
+            diag= self.keylist(userInfo)
+            texto = ', '.join([d for d in diag])
+            diagnosticos = 'El tratamiento es para: ' + texto
+
+
+
+
+            return {'nombre': nombre, 'apellido': apellido, 'userID': userID, 'diagnostico': diagnosticos}
 
 # para obtener información del tratamiento. 
 # medicinas, dosis y frecuencia diaria
-class Tratamiento(ValidateRut):    
-    def name(self) -> Text:
+class Tratamiento(ValidationAction):    
+    def name(self):
         return "action_tratamiento"
 
-    @staticmethod
-    def diagnosticos(self, userID):
-        userID = userID
-        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
-        con = sqlite3.connect(path, check_same_thread=False)
-        cur = con.cursor()
-        cur.execute("SELECT diagnostico FROM tratamiento WHERE userID=?", (userID, ))
-        userInfo = json.loads(cur.fetchall()[0][0])
-
-        diagnosticos = self.keylist(userInfo)
-        return diagnosticos
     
-    def tratamientoInfo(self,
+    
+    print('EN TRATAMIENTOS')
+    def hola(
+        self,
         slot_value: Any,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
-        domain: DomainDict,) -> Dict[Text, Any]:
-
-        heritage = ValidateRut()
-        usuario = heritage.validate_rut(slot_value)
-        userID = usuario['userID']
-        # diagnosticos = self.diagnosticos(userID)
-        print(userID)
-
-        dispatcher.utter_message(text=f"Info Tratamiento: {usuario}")
-
-
-        return {'usuarioInfo': 'ALGUNA INFORMACIÓN'}
-    
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
         
+        print(slot_value)
+
+        return {'usuarioInfo': 'ALGO BONITO'}
+
 
 # esta clase crea y administra los horarios de cada medicina

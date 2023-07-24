@@ -1,6 +1,11 @@
 version: "3.1"
 
 stories:
+  - story: ask for tratamiento
+    steps:
+      - intent: ask_for_tratamiento
+      - action: utter_diagnostico
+
   - story: happy path
     steps:
       - intent: mood_great

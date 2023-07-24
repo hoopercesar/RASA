@@ -72,17 +72,45 @@ class ValidateRut(FormValidationAction):
             usuario = self.rut_db(self, slot_value)
             nombre = usuario['nombre']
             apellido = usuario['apellido']
-            fecha_nac = usuario['fecha_nac']
+            userID = usuario['userID']
             # dispatcher.utter_message(template="utter_rut_slots", nombre=nombre)
             # dispatcher.utter_message(template="utter_goodbye", nombre=nombre)
-            return {'nombre': nombre, 'apellido': apellido, 'fecha_nac': fecha_nac}
+            return {'nombre': nombre, 'apellido': apellido, 'userID': userID, 'marte': 'soy marciano'}
 
 # para obtener información del tratamiento. 
 # medicinas, dosis y frecuencia diaria
-# class Tratamiento():
+class Tratamiento(ValidateRut):    
+    def name(self) -> Text:
+        return "action_tratamiento"
+
+    @staticmethod
+    def diagnosticos(self, userID):
+        userID = userID
+        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
+        con = sqlite3.connect(path, check_same_thread=False)
+        cur = con.cursor()
+        cur.execute("SELECT diagnostico FROM tratamiento WHERE userID=?", (userID, ))
+        userInfo = json.loads(cur.fetchall()[0][0])
+
+        diagnosticos = self.keylist(userInfo)
+        return diagnosticos
     
-#     def __init__(self):
-#         return "retorna_tratamiento"
+    def tratamientoInfo(self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,) -> Dict[Text, Any]:
+
+        heritage = ValidateRut()
+        usuario = heritage.validate_rut(slot_value)
+        userID = usuario['userID']
+        # diagnosticos = self.diagnosticos(userID)
+        print(userID)
+
+        dispatcher.utter_message(text=f"Info Tratamiento: {usuario}")
+
+
+        return {'usuarioInfo': 'ALGUNA INFORMACIÓN'}
     
         
 

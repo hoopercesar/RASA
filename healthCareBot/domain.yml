@@ -25,7 +25,18 @@ slots:
     mappings:
       - type: from_entity
         entity: rut
+  # CUSTOM SLOTS
   nombre:
+    type: text
+    mappings:
+      - type: custom
+        action: validate_rut_form
+  userID:
+    type: text
+    mappings:
+      - type: custom
+        action: validate_rut_form
+  marte:
     type: text
     mappings:
       - type: custom
@@ -35,36 +46,16 @@ slots:
     mappings:
       - type: custom
         action: validate_rut_form
-  fecha_nac:
+  usuarioInfo:
     type: text
     mappings:
       - type: custom
-        action: validate_rut_form
-  # tratamiento:
-  #   type: text
-  #   influence_conversation: true
-  #   mappings:
-  #     - type: from_entity
-  #       entity: tratamiento
-  # horarios:
-  #   type: text
-  #   influence_conversation: true
-  #   mappings:
-  #     - type: from_entity
-  #       entity: horarios
-
+        action: action_tratamiento
+# ****************************************
 forms:
   rut_form:
     required_slots:
       - rut
-
-  # tratamiento_form:
-  #   required_slots:
-  #     - tratamiento
-
-  # horarios_form:
-  #   required_slots:
-  #     - horarios
 
 responses:
   utter_greet:
@@ -82,19 +73,19 @@ responses:
     - text: "Bien... excelente"
 
   utter_goodbye:
-    - text: "Hasta la próxima, {nombre} {apellido}. {fecha_nac}"
-    - text: "Mantente en contacto. Chao, {nombre} {apellido}. {fecha_nac}"
-    - text: "Estaré aquí para lo que necesites, {nombre} {apellido}. Hasta pronto. {fecha_nac}"
+    - text: "Hasta la próxima, "
+    - text: "Mantente en contacto. Chao, {apellido}. "
+    - text: "Estaré aquí para lo que necesites, {apellido}. Hasta pronto. "
 
   utter_iamabot:
     - text: "Soy una asistente virtual. Estoy aquí para ayudar en tu tratamiento"
 
   utter_submit:
-    - text: "Gracias. Estoy procesando su informacióm..."
-    - text: "Información recibida. Aguarde unos instantes..."
+    - text: "Gracias. Estoy procesando su informacióm... {usuarioInfo}"
+    - text: "Información recibida. Aguarde unos instantes... {usuarioInfo}"
 
   utter_rut_slots:
-    - text: "{nombre}, si quieres revisar tus medicinas, digita tratamiento. Si quieres revisar los horarios digita horario"
+    - text: " si quieres revisar tus medicinas, digita tratamiento. Si quieres revisar los horarios digita horario"
 
 session_config:
   session_expiration_time: 60
@@ -102,3 +93,4 @@ session_config:
 
 actions:
   - validate_rut_form
+  - action_tratamiento

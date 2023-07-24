@@ -1,6 +1,16 @@
 version: "3.1"
 
 nlu:
+  - intent: ask_for_tratamiento
+    examples: |
+      - quiero saber cuál es mi tratamiento
+      - cuál es el diagnóstico del médico?
+      - qué dijo el doctor?
+      - no entendí lo que dijo el médico
+      - cuál es la receta del doctor?
+      - cómo debo seguir el tratamiento?
+      - recuérdame el diagnóstico del doctor
+
   - intent: inform_rut
     examples: |
       - mi rut es [123456789](rut)

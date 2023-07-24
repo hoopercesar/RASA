@@ -103,6 +103,7 @@ class Tratamiento(ValidateRut):
         userInfo = json.loads(cur.fetchall()[0][0])
 
         diagnosticos = self.keylist(userInfo)
+        print('DIAGNOSTICOS', diagnosticos[0])
 
         return diagnosticos
 
@@ -162,4 +163,5 @@ class Tratamiento(ValidateRut):
         
 t = Tratamiento('20502458-1')      
 v = ValidateRut('13109915-0')   
-print(t.diagnosticos())
+m = {'key uno': 18}
+print(t.diagnosticos(), m['key uno'])

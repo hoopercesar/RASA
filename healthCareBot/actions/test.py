@@ -44,7 +44,7 @@ class ValidateRut():
             dat = json.loads(dato[0])
             if (hashedRut == self.keylist(dat)[0]):
                 paciente = dat[hashedRut]
-                print('PACIENTE', paciente)
+                # print('PACIENTE', paciente['userID'])
                 return paciente
 
         
@@ -91,6 +91,7 @@ class Tratamiento(ValidateRut):
     @staticmethod
     def userID(rut):
         val = ValidateRut(rut)
+        # print('AQUI ESTA', val.rut_db(rut))
         return val.validate_rut()['userID']
 
     def diagnosticos(self):
@@ -153,6 +154,7 @@ class Tratamiento(ValidateRut):
         dentro de un diccionario. sin embargo, esta presentación no es adecuada para el paciente.
         en este método se presenta la información de manera entendible para el paciente.
         un mensaje con el nombre de la medicina y la dosis diaria'''
+        
         return 'algo'
         
 # fran = 12658439-3
@@ -160,4 +162,4 @@ class Tratamiento(ValidateRut):
         
 t = Tratamiento('20502458-1')      
 v = ValidateRut('13109915-0')   
-print(v.validate_rut()['userID'])
+print(t.diagnosticos())

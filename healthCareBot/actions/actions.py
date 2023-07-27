@@ -56,7 +56,7 @@ class ValidateRut(FormValidationAction):
                 return paciente
 
     @staticmethod
-    async def diagnosticos(self, userID) -> Text:
+    def diagnosticos(self, userID) -> Text:
         path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
         con = sqlite3.connect(path, check_same_thread=False)
         cur = con.cursor()
@@ -94,6 +94,7 @@ class ValidateRut(FormValidationAction):
             apellido = usuario['apellido']
             userID = usuario['userID']
 
+            ## DIAGNOSTICO
             path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
             con = sqlite3.connect(path, check_same_thread=False)
             cur = con.cursor()
@@ -102,11 +103,58 @@ class ValidateRut(FormValidationAction):
             diag= self.keylist(userInfo)
             texto = ', '.join([d for d in diag])
             diagnosticos = 'El tratamiento es para: ' + texto
+            ####################
 
+            ## DOSIS
+            lista = []
+            for k in self.keylist(userInfo):
+                lista.append(userInfo[k])
+            
+            dicc = {}
+            for dic1 in lista:
+                for sub in dic1:
+                    dicc[sub] = dic1[sub] 
+            dosis = dicc
+            lista = self.keylist(dosis)
+            mensajes = []
+            for li in lista:
+                mensajes.append(dosis[li][0] + ' de ' + li.upper()  + '. ' 
+                                + str(dosis[li][1]) + ' dosis al dia. Durante ' + str(dosis[li][2]) + ' dias.' + '\n')           
 
+            texto_dosis = ' '.join([mensaje for mensaje in mensajes])
+            ###########################################
 
+            ## FUNCIÓN QUE GENERA TEXTOS DE DIAGNÓSTICOS Y TRATAMIENTO (MEDICAMENTOS) INDICADOS POR MÉDICO  
+            dd = {}
+            for dig in diag:
+                # print(diag, userInfo[diag])
+                dd[dig] = self.keylist(userInfo[dig])
+            
+            ## IDEA: CUANDO PACIENTE PREGUNTE POR DIAGNÓSTIO
+            ## EL BOT RESPONDE CON EL MÉTODO DIAGNÓSTICO: UNA LISTA DE LAS ENFERMEDADES...
+            ## CUANDO PACIENTE PREGUNTA POR MEDICAMENTOS, SE ENTREGA LA ENFERMEDAD
+            ## JUNTO CON LA LISTA DE LOS MEDICAMENTOS PARA EL TRATAMIENTO. 
 
-            return {'nombre': nombre, 'apellido': apellido, 'userID': userID, 'diagnostico': diagnosticos}
+            # salida de los medicamentos: 'enfermedad y los medicamentos indicados por el médico'
+            # enfs lista de enfrmedades
+            enfs = self.keylist(dd)
+            textos = []
+            for enf in enfs:
+                textos.append(' Para el cuadro de ' + enf.upper() + ' el tratamiento es con: ' + ', '.join([k for k in dd[enf]]) + '.')
+                # print('Para el cuadro de ' + enf.upper() + ' el tratamiento es con: ' + ', '.join([k for k in dd[enf]]))
+            
+            # #este testo contiene la enfermedad y los medicamentos prescritos.
+            # # al estilo ej. Para la GRIPE se te prescribió el tratamiento con: aspirina, etc 
+            texto_medicamentos = '\n '.join([tex for tex in textos])
+            # texto_medicamentos = userInfo 
+            ##########################
+
+            ## diagnostico: va en utter_tratamiento
+            ## dosis: va en utter_horarios
+
+            return {'nombre': nombre, 'apellido': apellido, 
+                    'userID': userID, 'diagnostico': diagnosticos, 
+                    'dosis': texto_dosis, 'medicinas': texto_medicamentos}
 
 # para obtener información del tratamiento. 
 # medicinas, dosis y frecuencia diaria

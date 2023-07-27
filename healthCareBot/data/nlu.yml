@@ -1,15 +1,60 @@
 version: "3.1"
 
 nlu:
-  - intent: ask_for_tratamiento
+  # AQUÍ VAN LAS MEDICINAS, DOSIS Y FRECUENCIA
+  - intent: ask_for_dosis
     examples: |
-      - quiero saber cuál es mi tratamiento
+      - cuáles son las dosis de las medicinas?
+      - cuántas dosis al día de cada remedio?
+      - cuánto debo tomar cada vez??
+      - cuál es la dosis
+      - dosis
+      - dosis de remedios
+      - dame la frecuencia/dosis de cada remedio/medicina
+      - necesito saber cuánto debo tomar 
+      - cuántas veces al día y cuánta cantidad cada vez?
+      - no recuerdo la cantidad de remedio
+      - cuál es la cantidad y cuantas veces al día
+      - cuántos días debo tomar este remedio y cuántas veces al día. 
+      - cuánto dura?
+
+  # AQUÍ VAN LAS ENFERMEDADES Y LAS MEDICINAS PARA CADA ENFERMEDAD
+  - intent: ask_for_medicinas
+    examples: |
+      - cuáles son remedios/medicinas/medicamento tengo que tomar?
+      - estos remedios para qué son?
+      - qué medicamento/remedio/medicina?
+      - cuál medicina/remedio/medicamento debo tomar?
+      - qué medicinas debo tomar?
+      - podría decirme cuáles remedios tengo que tomar
+      - para qué sirve cada remedio/medicina/medicamento?
+      - esta medicina para qué es?
+      - cuáles remedios/medicinas/medicamentos debo tomar?
+      - olvidé el nombre de los medicamentos/remedios/medicinas
+      - cómo se llama el remedio/medicina/medicamento para la...?
+      - recuérdame el nombre del remedio/medicina/medicamento para 
+      - esto es para qué?
+      - para qué sirve cada remedio
+      - qué enfermedad está tratando
+
+  # AQUÍ EL DIAGNÓSTICO
+  - intent: ask_for_diagnostico
+    examples: |
+      - quiero saber cuál es mi diagnóstico
       - cuál es el diagnóstico del médico?
       - qué dijo el doctor?
-      - no entendí lo que dijo el médico
-      - cuál es la receta del doctor?
-      - cómo debo seguir el tratamiento?
+      - no entendí/no recuerdo lo que dijo el médico que tengo
+      - qué dijo que tengo del doctor?
+      - de qué estoy enfermo/enferma?
+      - qué diagnosticó el doctor?
       - recuérdame el diagnóstico del doctor
+      - qué tengo?
+      - qué es lo que tengo?
+      - no sé lo que tengo.
+      - dime qué tengo
+      - cuál es mi enfermedad?
+      - cuáles son mis enfermedades?
+      - qué enfermedad/enfermedades tengo?
 
   - intent: inform_rut
     examples: |
@@ -24,6 +69,16 @@ nlu:
       - hola
       - Hola, qué tal.
       - buen día
+
+  - intent: agradecimiento
+    examples: |
+      - Gracias
+      - muchas gracias.
+      - te lo agradeco. 
+      - gracias, eres muy amable
+      - muy agradecida/agradecido
+      - te debo una.
+      - te pasaste, gracias.
 
   - intent: goodbye
     examples: |

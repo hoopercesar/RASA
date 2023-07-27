@@ -4,10 +4,14 @@ intents:
   - greet
   - goodbye
   - affirm
+  - agradecimiento
   - deny
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - ask_for_diagnostico
+  - ask_for_medicinas
+  - ask_for_dosis
   - inform_rut
   - request_rut_form
   # - request_tratamiento_form
@@ -36,7 +40,17 @@ slots:
     mappings:
       - type: custom
         action: validate_rut_form
-  marte:
+  diagnostico:
+    type: text
+    mappings:
+      - type: custom
+        action: validate_rut_form
+  dosis:
+    type: text
+    mappings:
+      - type: custom
+        action: validate_rut_form
+  medicinas:
     type: text
     mappings:
       - type: custom
@@ -58,6 +72,34 @@ forms:
       - rut
 
 responses:
+  utter_diagnostico:
+    - text: "Ésto fue lo que dijo el doctor. {diagnostico}. \n
+        \n
+        (Digita 'horarios' o 'medicina', para obtener información de esos items)"
+    - text: "Tu diagnóstico a continuación. {diagnostico}\n
+        \n
+        (Digita 'horarios' o 'medicina', para obtener información de esos items)"
+    - text: "El médico le diagnosticó me entregó tu diagnóstico. {diagnostico}\n
+        \n
+        (Digita 'horarios' o 'medicina', para obtener información de esos items"
+    - text: "Ya estás pedido. Vas a morir {diagnostico}\n
+        \n
+        (Digita 'horarios' o 'medicina', para obtener información de esos items"
+
+  utter_dosis:
+    - text: "Estas son las dosis de tus medicinas:\n  {dosis}"
+    - text: "Aquí dejo tus medicinas y dosis\n {dosis}"
+    - text: "Lee con atención las dosis de tus medicinas\n {dosis}"
+
+  utter_medicinas:
+    - text:
+        "A continuación se ennumeran las medicinas y la enfermedad que están tratando:\n
+        \n
+        {medicinas}"
+    - text: "Te dejo el diagnóstico y los remedios que debes tomar\n
+        \n
+        {medicinas}"
+
   utter_greet:
     - text: "Hola, qué tal? Soy tu asistente virtual. Podría digitar su Rut (ej. 111222333-4)"
     - text: "Qué tal. Por favor, escriba su Rut (ej. 111222333-4)"
@@ -65,6 +107,11 @@ responses:
 
   utter_cheer_up:
     - text: "Quiéres contarme cuáles son tus síntomas"
+
+  utter_de_nada:
+    - text: "Cuando gustes."
+    - text: "Estoy para servirte!"
+    - text: "Me complace ayudarte."
 
   utter_did_that_help:
     - text: "Ha sido de ayuda?"
@@ -74,18 +121,21 @@ responses:
 
   utter_goodbye:
     - text: "Hasta la próxima, "
-    - text: "Mantente en contacto. Chao, {apellido}. "
-    - text: "Estaré aquí para lo que necesites, {apellido}. Hasta pronto. "
+    - text: "Mantente en contacto. Chao. "
+    - text: "Estaré aquí para lo que necesites. Hasta pronto. "
 
   utter_iamabot:
-    - text: "Soy una asistente virtual. Estoy aquí para ayudar en tu tratamiento"
+    - text: "Soy una asistente virtual de acompañamiento. \n
+        Puedo entregar información de tu diagnóstico, medicinas, dosis y horarios.\n"
 
   utter_submit:
-    - text: "Gracias. Estoy procesando su informacióm... {usuarioInfo}"
-    - text: "Información recibida. Aguarde unos instantes... {usuarioInfo}"
+    - text: "Estoy procesando su informacióm... "
+    - text: "Procesando tu información..."
 
   utter_rut_slots:
-    - text: " si quieres revisar tus medicinas, digita tratamiento. Si quieres revisar los horarios digita horario"
+    - text: " Hola, {nombre}.\n
+        Puedes ofrecerte información sobre de tu diagnóstico, medicinas, dosis y horarios.\n
+        En qué te puedo ayudar?"
 
 session_config:
   session_expiration_time: 60

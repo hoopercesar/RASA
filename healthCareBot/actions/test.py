@@ -9,11 +9,11 @@ class ValidateRut():
     def __init__(self, rut):
         self.rut = rut
 
-    # entrega la hora (minuto a minuto)
+    # entrega fecha y hora actual en formato 'year-' 
     @staticmethod
     def entregaHora():
-        hora = datetime.datetime.now().strftime("%Y-%d-%m %H:%M")
-
+        hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        time.sleep(60)
         return hora
     
     # función que crea los horarios de las medicinas
@@ -61,7 +61,7 @@ class ValidateRut():
         while (activo == True):
             incremento = datetime.timedelta(minutes=periodo*counter) #configurado c/2 min
             diaFuturo = fechaInicio + incremento
-            horarios.append(diaFuturo.strftime("%Y-%d-%m %H:%M"))
+            horarios.append(diaFuturo.strftime("%Y-%m-%d %H:%M"))
             if (diaFuturo == fechaFinalizacion):
                 print('El tratamiento Finaliza ahora', diaFuturo)
                 activo = False
@@ -127,8 +127,17 @@ class ValidateRut():
     def validate_rut(self):
                 
         """Validate rut value"""
-        hora = self.entregaHora()
-        print(hora)
+        time = self.entregaHora()
+        horarios = self.creaHorarios('2023, 07, 29', '21:50', ['100mg', 3, 3])
+        print('HORARIOS', horarios[0:10], time)
+        for t in range(0, 10):
+            hora = self.entregaHora()
+            print(t, hora)
+
+            if hora in horarios:
+                message = f"{hora} Hora de Medicina!"
+                print(message)
+
         mensaje = ''
         if (self.rut_db(self, self.rut) ==  None):
             mensaje = 'Rut no válido'

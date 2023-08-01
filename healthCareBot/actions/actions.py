@@ -171,11 +171,10 @@ class Tratatamiento(Action):
                dispatcher: CollectingDispatcher,
                tracker: Tracker,
                domain: DomainDict) -> Dict[Text, Any]:
-
-        dispatcher.utter_message(text="ESTOY EN TRATAMIENTO")
+                
         
-        print('Estoy activo, tratamiento')
-        return [SlotSet("usuarioInfo", 'ESTOY FUNCIONANDO')]
+        # print('Estoy activo, tratamiento')
+        return [SlotSet("usuarioInfo", "ALGO")]
 
 
     

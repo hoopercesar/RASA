@@ -64,6 +64,12 @@ nlu:
       - aquí está [5483729558](rut)
       - sí, [2109575832](rut)
 
+  - intent: inform_age
+    examples: |
+      - mi edad es [32](age) años
+      - tengo [27](age) años
+      - [47](age) años
+
   - intent: greet
     examples: |
       - hola

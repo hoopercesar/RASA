@@ -6,6 +6,11 @@ stories:
       - intent: ask_for_diagnostico
       - action: utter_diagnostico
 
+  - story: inform age
+    steps:
+      - intent: inform_age
+      - action: utter_show_age
+
   - story: ask for medicinas
     steps:
       - intent: ask_for_medicinas

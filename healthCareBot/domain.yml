@@ -14,11 +14,13 @@ intents:
   - ask_for_dosis
   - inform_rut
   - request_rut_form
+  - inform_age
   # - request_tratamiento_form
   # - request_horarios_form
 
 entities:
   - rut
+  - age
   # - tratamiento
   # - horarios
 
@@ -60,6 +62,12 @@ slots:
     mappings:
       - type: custom
         action: validate_rut_form
+  age:
+    type: text
+    mappings:
+      - type: custom
+        action: action_tratamiento
+
   usuarioInfo:
     type: text
     mappings:
@@ -118,6 +126,10 @@ responses:
 
   utter_happy:
     - text: "Bien... excelente"
+
+  utter_show_age:
+    - text: "tu edad es {age} años"
+    - text: "tienes {age} años"
 
   utter_goodbye:
     - text: "Hasta la próxima, "

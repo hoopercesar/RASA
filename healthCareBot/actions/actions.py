@@ -2,7 +2,7 @@ from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker, ValidationAction
 from rasa_sdk.forms import FormValidationAction
-from rasa_sdk.events import EventType
+from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.types import DomainDict
 from rasa_sdk.executor import CollectingDispatcher
 import sqlite3
@@ -148,6 +148,9 @@ class ValidateRut(FormValidationAction):
             texto_medicamentos = '\n '.join([tex for tex in textos])
             # texto_medicamentos = userInfo 
             ##########################
+            # pp = GerenciaHorarios()
+            # nome = pp.prueba()
+            # print(nome)
 
             ## diagnostico: va en utter_tratamiento
             ## dosis: va en utter_horarios
@@ -158,24 +161,24 @@ class ValidateRut(FormValidationAction):
 
 # para obtener información del tratamiento. 
 # medicinas, dosis y frecuencia diaria
-class Tratamiento(ValidationAction):    
-    def name(self):
+
+class Tratatamiento(Action):
+    def name(self) -> Text:
         return "action_tratamiento"
+    
+    def run(self,
+            #    slot_value: Any,
+               dispatcher: CollectingDispatcher,
+               tracker: Tracker,
+               domain: DomainDict) -> Dict[Text, Any]:
 
-    
-    
-    print('EN TRATAMIENTOS')
-    def hola(
-        self,
-        slot_value: Any,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: DomainDict,
-    ) -> Dict[Text, Any]:
+        dispatcher.utter_message(text="ESTOY EN TRATAMIENTO")
         
-        print(slot_value)
+        print('Estoy activo, tratamiento')
+        return [SlotSet("usuarioInfo", 'ESTOY FUNCIONANDO')]
 
-        return {'usuarioInfo': 'ALGO BONITO'}
+
+    
 
 
 # esta clase crea y administra los horarios de cada medicina

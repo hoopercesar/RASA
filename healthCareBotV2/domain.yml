@@ -8,26 +8,81 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - inform_rut
+  - inform_nombre
+  - tecla
+
+entities:
+  - rut
+  - nombre
+
+slots:
+  rut:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: rut
+
+  nombre:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: nombre
+
+  mensaje:
+    type: text
+    mappings:
+      - type: custom
+        action: action_verify_rut
 
 responses:
+  utter_verify:
+    - text: "Estoy verificando, entre mis datos. Cuál es tu nombre?"
+    - text: "Verificando... cuál es tu nombre?"
+
+  utter_comodin:
+    - text: "Presiona k para continuar"
+    - text: "Presiona la letra m para continuar"
+
+  utter_verified:
+    - text: "He verificado tu nombre: {mensaje}"
+
+  utter_ask_rut:
+    - text: "Hola. Me podrías dar tu rut?"
+    - text: "Cómo estás. Ingresa tu rut, por favor?"
+    - text: "Buenas, Dame tu rut por favor"
+    - text: "Hola. Gusto saber de tí. tu Rut?"
+
+  utter_agradecimiento:
+    - text: "Gracias"
+    - text: "Muchas gracias"
+
   utter_greet:
-  - text: "Hey! How are you?"
+    - text: "Hola, todo bien"
+    - text: "Qué tal?"
 
   utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+    - text: "Vamos a tratar de hacer algo al respecto"
+    - text: "Algo haremos para hacerte sentir mejor"
 
   utter_did_that_help:
-  - text: "Did that help you?"
+    - text: "Did that help you?"
 
   utter_happy:
-  - text: "Great, carry on!"
+    - text: "Genial"
+    - text: "Me alegro mucho"
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "hasta pronto."
+    - text: "Adiós"
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+    - text: "I am a bot, powered by Rasa."
+
+actions:
+  - action_verify_rut
 
 session_config:
   session_expiration_time: 60

@@ -1,0 +1,105 @@
+version: "3.1"
+
+nlu:
+  - intent: tecla
+    examples: |
+      - k
+      - m
+      - K
+      - M
+
+  - intent: inform_rut
+    examples: |
+      - este es mi rut [123456789-0](rut)
+      - te doy mi rut [98765431-0](rut)
+      - mi rut [2394036272-9](rut)
+      - [230294726-0](rut)
+
+  - intent: inform_nombre
+    examples: |
+      - mi nombre es [pepe](nombre)
+      - me llamo [Norma](nombre)
+      - [Carla](nombre)
+      - me llamo [Raúl](nombre)
+      - [Daniel](nombre)
+      - [Fernanda](nombre)
+      - [Marcela](nombre)
+      - [Miguel](nombre)
+      - [Mauricio](nombre)
+      - [Lidia](nombre)
+      - [Andrea](nombre)
+      - [soledad](nombre)
+      - [Sergio](nombre)
+      - [Berta](nombre)
+      - [Priscila](nombre)
+      - [Andrés](nombre)
+      - [Jimena](nombre)
+      - [Sofía](nombre)
+      - [Camila](nombre)
+      - [Felipe](nombre)
+      - [Solange](nombre)
+      - [Ricardo](nombre)
+      - [Eduardo](nombre)
+      - [Adela](nombre)
+      - [marion](nommbre)
+      - [carlos](nombre)
+
+  - intent: greet
+    examples: |
+      - hey, qué cuentas?
+      - Qué tal
+      - Cómo estás?
+      - Qué hubo?
+      - Hola
+
+  - intent: goodbye
+    examples: |
+      - chao
+      - good by
+      - cee you later
+      - good night
+      - bye
+
+  - intent: affirm
+    examples: |
+      - yes
+      - y
+      - indeed
+      - of course
+      - that sounds good
+      - correct
+
+  - intent: deny
+    examples: |
+      - no
+      - n
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not really
+
+  - intent: mood_great
+    examples: |
+      - perfecto
+      - muy bien
+      - excelente
+      - me siento muy bien
+      - estoy bien
+
+  - intent: mood_unhappy
+    examples: |
+      - Mal
+      - Me siento pésimo
+      - Mal, estoy muy mal
+      - No me siento bien
+      - Estoy enfermo/enferma
+      - Me duele todo
+      - Estoy adolorido/adolorida
+
+  - intent: bot_challenge
+    examples: |
+      - are you a bot?
+      - are you a human?
+      - am I talking to a bot?
+      - am I talking to a human?

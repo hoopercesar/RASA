@@ -55,23 +55,6 @@ class ValidateRut(FormValidationAction):
                 paciente = dat[hashedRut]
                 return paciente
 
-    @staticmethod
-    def diagnosticos(self, userID) -> Text:
-        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
-        con = sqlite3.connect(path, check_same_thread=False)
-        cur = con.cursor()
-        cur.execute("SELECT diagnostico FROM tratamiento WHERE userID=?", (userID, ))
-        userInfo = json.loads(cur.fetchall()[0][0])
-        diag= self.keylist(userInfo)
-        texto = ', '.join([d for d in diag])
-        diagnosticos = 'El tratamiento es para: ' + texto
-
-        # diagnosticos = self.keylist(userInfo)
-
-        return diagnosticos
-
-
-
     def validate_rut(                  
         self,
         slot_value: Any,
@@ -171,10 +154,12 @@ class Tratatamiento(Action):
                dispatcher: CollectingDispatcher,
                tracker: Tracker,
                domain: DomainDict) -> Dict[Text, Any]:
+        edad = tracker.get_slot("rut")
+        print(edad)
                 
-        
+        dispatcher.utter_message(responde="utter_show_age", ege = edad)
         # print('Estoy activo, tratamiento')
-        return [SlotSet("usuarioInfo", "ALGO")]
+        return [SlotSet("usuarioInfo", edad)]
 
 
     

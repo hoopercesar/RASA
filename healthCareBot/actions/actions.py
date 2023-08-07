@@ -8,6 +8,9 @@ from rasa_sdk.executor import CollectingDispatcher
 import sqlite3
 import hashlib
 import json
+import datetime
+from datetime import date, timedelta
+
 
 
 class ValidateRut(FormValidationAction):
@@ -149,17 +152,56 @@ class Tratatamiento(Action):
     def name(self) -> Text:
         return "action_tratamiento"
     
+    def calcular_edad(fecha_nacimiento):
+        fecha_actual = date.today()
+        edad = fecha_actual.year - fecha_nacimiento.year
+        if fecha_actual.month < fecha_nacimiento.month:
+            edad -= 1
+        elif fecha_actual.month == fecha_nacimiento.month and fecha_actual.day < fecha_nacimiento.day:
+            edad -= 1
+        return edad
+
+    # SE PUEDE USAR CLASSES DE ESTE TIPO PARA ENVIAR INFORMACIÓN ESPECÍFICA
+    # EN ALGÚN UTTER ESPECÍFICO, PREPARADO PARA RECIBIR SÓLO ESA INFORMACIÓN.
+    # POR EJEMPLO, SI USER PREGUNTA CUÁNDO ES MI CUMPLEAÑOS
+    # ENTONCES, SE ENVÍA LA RESPUESTA DESDE UN ACTION DE ESTE TIPO.
+    # A TENER EN CUENTA: EL RUT NO SE CARGA INMEDIATAMENTE CUANDO EL USUARIO LO INGRESA
+    # ES NECESARIO QUE EL USUARIO DIGITE ALGO MÁS PARA QUE ESTA ACCIÓN
+    # RECIBA EL SLOT. O SEA, SI SE LE PREGUNTA POR UN SLOT, USUARIO RESPONDE
+    # LUEGO BOT DEBE PEDIR QUE USUARIO INGRESE ALGUNA INFORMACIÓN MÁS (CUALQUIER COSA, PRESIONAR UNA LETRA Y DAR ENTER)
+    # Y SÓLO AHÍ ESTA ACCIÓN RECIBE LA INFORMACIÓN DEL SLOT SOLICITADO
+    # NO SÉ SI SE TRATA DE UNA PARTICULARIDAD DE ESTE PROCESO, O ES QUE YO NO LO ESTOY ENTENDIENDO BIEN!!
     def run(self,
             #    slot_value: Any,
                dispatcher: CollectingDispatcher,
                tracker: Tracker,
                domain: DomainDict) -> Dict[Text, Any]:
-        edad = tracker.get_slot("rut")
-        print(edad)
+
+       
+        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
+        con = sqlite3.connect(path, check_same_thread=False)
+        cur = con.cursor()
+
+        cur.execute("SELECT * FROM datospersonales")
+        datos = cur.fetchall()
+
+
+        rut = tracker.get_slot("rut")
+        validate = ValidateRut()
+        paciente = None
+        hashedRut = None
+        if rut:
+            hashedRut = validate.generar_hash(rut)            
+            for dato in datos:
+                dat = json.loads(dato[0])
+                if (hashedRut == validate.keylist(dat)[0]):
+                    paciente = dat[hashedRut]
+                    fecha_nac = paciente['fecha_nac']
+            age = self.calcular_edad(date(1985, 5, 2))
+
+            print(age)
                 
-        dispatcher.utter_message(responde="utter_show_age", ege = edad)
-        # print('Estoy activo, tratamiento')
-        return [SlotSet("usuarioInfo", edad)]
+        return [SlotSet("usuarioInfo", hashedRut)]
 
 
     

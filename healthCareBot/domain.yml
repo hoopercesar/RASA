@@ -156,3 +156,5 @@ session_config:
 actions:
   - validate_rut_form
   - action_tratamiento
+  - action_horario_medicinas
+  - action_crea_horario_medicinas

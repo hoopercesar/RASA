@@ -9,6 +9,7 @@ import sqlite3
 import hashlib
 import json
 import datetime
+import time 
 from datetime import date, timedelta
 
 
@@ -150,16 +151,106 @@ class ValidateRut(FormValidationAction):
 
 class Tratatamiento(Action):
     def name(self) -> Text:
-        return "action_tratamiento"
+        return "action_tratamiento"  
+
+
+    # entrega fecha y hora actual en formato 'year-' 
+    @staticmethod
+    def entregaHora():
+        hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        time.sleep(60)
+        return hora
     
-    def calcular_edad(fecha_nacimiento):
-        fecha_actual = date.today()
-        edad = fecha_actual.year - fecha_nacimiento.year
-        if fecha_actual.month < fecha_nacimiento.month:
-            edad -= 1
-        elif fecha_actual.month == fecha_nacimiento.month and fecha_actual.day < fecha_nacimiento.day:
-            edad -= 1
-        return edad
+    @staticmethod
+    def guardaDatosInicioMedicinas(userID, nombreMedicina, diaInicio, horaInicio, datosMedicina):
+        '''
+        nombreMedicina: string -> nombre de la medicina
+        userID: ID del usuario
+        diaInicio: 'yyyy, mm, dd'
+        horaInicio: 'hh:mm'
+        datosMedicina: ['dosis mg', freq(int), duracion(int)]
+
+        --------------------------
+        userID | {'nombreMedicina': [diaInicio, horaInicio, ['dosis', freq, duracion]], 'nombreMedicina2':[...etc]}
+
+        '''
+        datos = {}
+        datos[nombreMedicina] = [diaInicio, horaInicio, datosMedicina]
+
+        # pasar datos a JSON
+        datos = json.dumps(datos)
+
+        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
+        con = sqlite3.connect(path, check_same_thread=False)
+        cur = con.cursor()
+        
+        # crea tabla con horarios y datos de medicinas
+        cur.execute("CREATE TABLE IF NOT EXISTS gestionMedicamentos (userID VARCHAR(36) NOT NULL, datos TEXT)")
+        cur.execute("INSERT INTO gestionMedicamentos (userID, datos) VALUES (?, ?)", (userID, datos))
+
+        con.commit()
+        con.close()
+
+
+        return []
+
+
+    @staticmethod
+    def creaHorarios(diaInicio, horaInicio, datosMedicina):
+          
+          
+          ''' 
+        COMMAND: creaHorarios('fechaInicio', 'horaInicio', ['200mg', 8, 3])
+        diaInicio: string -> 'yyyy, mm, dd' (default: 'ahora' -> fecha actual)
+        horaInicio: string -> 'hh:mm' (default: 'ahora'-> hora actual)
+        RETORNA: arreglo con los horarios de medicinas en formato string 'year-month-day hh:mm'   
+        datosMedicina: ['cantidadmg', frecuencia, duracion] 
+        '''    
+        # Configuración de inicio de las fechas de inicio y de finalización
+        # en formato datetime
+        # IMPORTANTE: al escribir código final, el paciente debe tener clariad
+        # de lo que significa que el tratamiento inicie a las 00:00 hrs. 
+        # p.ej. si el tratamiento inicia a las 00 hra del 31 de julio, son las 0 horas del inicio del día 31
+        # y no las 00 hrs del inicio del día 01 de agosto. 
+          if diaInicio == 'ahora' and horaInicio == 'ahora':
+
+            fechaInicio = datetime.datetime.now()
+            fechaFinalizacion = datetime.timedelta(days=datosMedicina[2]) + fechaInicio
+          else:
+                inicio = [int(k) for k in diaInicio.split(',')]
+                hora = [int(k) for k in horaInicio.split(':')]
+                fechaInicio = datetime.datetime(inicio[0], inicio[1], inicio[2], hora[0], hora[1])
+                fechaFinalizacion = datetime.timedelta(days=datosMedicina[2]) + fechaInicio
+            
+        # inicio de conteo
+        # mensaje de finalización de tratamiento con esa medicina
+          mensajeInicio = f"Inicio Tratamiento: {fechaInicio}"
+          mensajeFinalizacion = f"Finalizacion del Tratamiento: {fechaFinalizacion}"
+    #     print('Inicio de tratamiento', fechaInicio)
+    #     print('El tratamiento con este medicamento finaliza: ', fechaFinalizacion)
+          print('------------------------------------------------')
+
+         # periodo de las dosis
+          periodo = 24/datosMedicina[1]
+        
+        #switch de encendido y apagado de la funcion
+          activo = True
+          counter = 1 # contador
+          horarios = []
+        
+          while (activo == True):
+
+            incremento = datetime.timedelta(hours=periodo*counter) #configurado c/2 min
+            diaFuturo = fechaInicio + incremento
+            horarios.append(diaFuturo.strftime("%Y-%m-%d %H:%M"))
+            if (diaFuturo == fechaFinalizacion):
+                print('El tratamiento Finaliza ahora', diaFuturo)
+                activo = False
+            
+            counter += 1            
+            
+          return horarios
+        
 
     # SE PUEDE USAR CLASSES DE ESTE TIPO PARA ENVIAR INFORMACIÓN ESPECÍFICA
     # EN ALGÚN UTTER ESPECÍFICO, PREPARADO PARA RECIBIR SÓLO ESA INFORMACIÓN.
@@ -196,14 +287,48 @@ class Tratatamiento(Action):
                 dat = json.loads(dato[0])
                 if (hashedRut == validate.keylist(dat)[0]):
                     paciente = dat[hashedRut]
-                    fecha_nac = paciente['fecha_nac']
-            age = self.calcular_edad(date(1985, 5, 2))
+                    userID = paciente['userID']
+                    # print(userID)
 
-            print(age)
+        horarios = self.creaHorarios('2023,8,8', '8:00', ['100mg', 3, 5])
+        print(horarios)
                 
-        return [SlotSet("usuarioInfo", hashedRut)]
+        return [SlotSet("usuarioInfo", horarios)]
 
 
+# esta clase muestra los horarios de cada medicamento
+class HorarioMedicinas(Action):
+    def name(self) -> Text:
+        return "action_horario_medicinas"    
+
+    def run(self,
+        #    slot_value: Any,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: DomainDict) -> Dict[Text, Any]:
+        trat = Tratatamiento()
+
+        rut = tracker.get_slot("rut")
+        if rut: print("Horarios Medicinas")
+        
+        return []
+
+
+# esta clase crea los horarios de las medicinas
+class CreaHorarioMedicinas(Action):
+    def name(self):
+        return "action_crea_horario_medicinas"
+    
+    def run(self,
+        #    slot_value: Any,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: DomainDict) -> Dict[Text, Any]:
+
+        age = tracker.get_slot("age")
+        if age: print("Crea horarios medicinas")
+        
+        return []
     
 
 

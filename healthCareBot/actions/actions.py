@@ -152,7 +152,25 @@ class ValidateRut(FormValidationAction):
 class Tratatamiento(Action):
     def name(self) -> Text:
         return "action_tratamiento"  
+    
+    @staticmethod
+    def keylist(dicc):
+        keylist = []
+        for k in dicc:
+            keylist.append(k)
+    
+        return keylist   
 
+    # retorna diccionario {nombreMedicina: [datos de tratamiento], ... }
+    @staticmethod
+    def nombreDatosMedicina(self, userID):
+        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
+        con = sqlite3.connect(path, check_same_thread=False)
+        cur = con.cursor()
+        cur.execute("SELECT diagnostico FROM tratamiento WHERE userID=?", (userID, ))
+        userInfo = json.loads(cur.fetchall()[0][0])        
+        diag= self.keylist(userInfo)
+        return diag
 
     # entrega fecha y hora actual en formato 'year-' 
     @staticmethod
@@ -161,6 +179,7 @@ class Tratatamiento(Action):
         time.sleep(60)
         return hora
     
+    # este método guarda datos de inicio de tratamiento en DB/tabla->gestionMedicamentos
     @staticmethod
     def guardaDatosInicioMedicinas(userID, nombreMedicina, diaInicio, horaInicio, datosMedicina):
         '''
@@ -193,11 +212,29 @@ class Tratatamiento(Action):
 
 
         return []
+    
+    # método que extrae información de gestión de medicamentos de DB/tabla->gestionMedicamentos
+    @staticmethod
+    def extraeDatosInicioMedicinas(userID, nombreMedicina):
+        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
+        con = sqlite3.connect(path, check_same_thread=False)
+        cur = con.cursor()
+
+        cur.execute("SELECT * FROM gestionMedicamentos WHERE userID=?", (userID, ))
+        datos = cur.fetchall()
+
+        # sacar de JSON los datos para transformarlos en objeto nuevamente
+
+        datosInicio = None
+        if datos[nombreMedicina]:
+            datosInicio = datos[nombreMedicina]
+
+        return datosInicio
+
 
 
     @staticmethod
-    def creaHorarios(diaInicio, horaInicio, datosMedicina):
-          
+    def creaHorarios(diaInicio, horaInicio, datosMedicina):          
           
           ''' 
         COMMAND: creaHorarios('fechaInicio', 'horaInicio', ['200mg', 8, 3])
@@ -275,6 +312,10 @@ class Tratatamiento(Action):
 
         cur.execute("SELECT * FROM datospersonales")
         datos = cur.fetchall()
+        
+        # recupera slot nombreMedicina
+        medicina = tracker.get_slot("medicina")
+        # print(medicina)
 
 
         rut = tracker.get_slot("rut")
@@ -288,10 +329,15 @@ class Tratatamiento(Action):
                 if (hashedRut == validate.keylist(dat)[0]):
                     paciente = dat[hashedRut]
                     userID = paciente['userID']
+                    datosmedicinas = None
+                    if userID: 
+                        datosmedicinas = self.nombreDatosMedicina(self, userID)
+                        print(datosmedicinas)
+
                     # print(userID)
 
         horarios = self.creaHorarios('2023,8,8', '8:00', ['100mg', 3, 5])
-        print(horarios)
+        # print(horarios)
                 
         return [SlotSet("usuarioInfo", horarios)]
 

@@ -170,7 +170,16 @@ class Tratatamiento(Action):
         cur.execute("SELECT diagnostico FROM tratamiento WHERE userID=?", (userID, ))
         userInfo = json.loads(cur.fetchall()[0][0])        
         diag= self.keylist(userInfo)
-        return diag
+
+        lista = []
+        for k in diag:
+            lista.append(userInfo[k])
+            
+        dicc = {}
+        for dic1 in lista:
+            for sub in dic1:
+                dicc[sub] = dic1[sub] 
+        return dicc
 
     # entrega fecha y hora actual en formato 'year-' 
     @staticmethod
@@ -203,12 +212,11 @@ class Tratatamiento(Action):
         con = sqlite3.connect(path, check_same_thread=False)
         cur = con.cursor()
         
-        # crea tabla con horarios y datos de medicinas
-        cur.execute("CREATE TABLE IF NOT EXISTS gestionMedicamentos (userID VARCHAR(36) NOT NULL, datos TEXT)")
+        # inserta los datos de inicio en tabla gstionMedicamentos
         cur.execute("INSERT INTO gestionMedicamentos (userID, datos) VALUES (?, ?)", (userID, datos))
 
         con.commit()
-        con.close()
+        # con.close()
 
 
         return []
@@ -220,16 +228,19 @@ class Tratatamiento(Action):
         con = sqlite3.connect(path, check_same_thread=False)
         cur = con.cursor()
 
+        # crea tabla gestionMedicamentos
+        cur.execute("CREATE TABLE IF NOT EXISTS gestionMedicamentos (userID VARCHAR(36) NOT NULL, datos TEXT)")
+
         cur.execute("SELECT * FROM gestionMedicamentos WHERE userID=?", (userID, ))
         datos = cur.fetchall()
 
         # sacar de JSON los datos para transformarlos en objeto nuevamente
 
-        datosInicio = None
-        if datos[nombreMedicina]:
-            datosInicio = datos[nombreMedicina]
+        # datosInicio = None
+        # if datos[nombreMedicina]:
+        #     datosInicio = datos[nombreMedicina]
 
-        return datosInicio
+        return datos
 
 
 
@@ -313,8 +324,7 @@ class Tratatamiento(Action):
         cur.execute("SELECT * FROM datospersonales")
         datos = cur.fetchall()
         
-        # recupera slot nombreMedicina
-        medicina = tracker.get_slot("medicina")
+
         # print(medicina)
 
 
@@ -322,6 +332,7 @@ class Tratatamiento(Action):
         validate = ValidateRut()
         paciente = None
         hashedRut = None
+        userID = None
         if rut:
             hashedRut = validate.generar_hash(rut)            
             for dato in datos:
@@ -329,12 +340,25 @@ class Tratatamiento(Action):
                 if (hashedRut == validate.keylist(dat)[0]):
                     paciente = dat[hashedRut]
                     userID = paciente['userID']
-                    datosmedicinas = None
-                    if userID: 
-                        datosmedicinas = self.nombreDatosMedicina(self, userID)
-                        print(datosmedicinas)
 
-                    # print(userID)
+            # obtiene objeto {nombreMedicina: [datos tratamiento]}
+            datosmedicinas = self.nombreDatosMedicina(self, userID)
+
+        # recupera slot nombreMedicina
+        nombremedicina = tracker.get_slot("medicina")       
+
+        if nombremedicina: 
+            datosmedicina = datosmedicinas[nombremedicina]
+            # recupera datos de inicio del tratammiento
+            info_inicio_tratamiento = self.extraeDatosInicioMedicinas(userID, nombremedicina)
+            # condicional: si no hay datos, se llama función para insertar información
+            if len(info_inicio_tratamiento) == 0:
+                # guarda = guardaDatosInicioMedicinas(userID, nombreMedicina, diaInicio, horaInicio, datosMedicina)
+                guarda = self.guardaDatosInicioMedicinas(userID, nombremedicina, '2023, 8, 12', '12:00', datosmedicina)
+
+
+        # print(info_inicio_tratamiento)
+
 
         horarios = self.creaHorarios('2023,8,8', '8:00', ['100mg', 3, 5])
         # print(horarios)

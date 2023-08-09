@@ -15,16 +15,25 @@ intents:
   - inform_rut
   - request_rut_form
   - inform_age
+  - ask_horario_medicina
+  - inform_nombre_medicina
   # - request_tratamiento_form
   # - request_horarios_form
 
 entities:
   - rut
   - age
+  - medicina
   # - tratamiento
   # - horarios
 
 slots:
+  medicina:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: medicina
+
   rut:
     type: text
     influence_conversation: true
@@ -80,6 +89,11 @@ forms:
       - rut
 
 responses:
+  utter_cual_medicina:
+    - text: "El horario de cuál medicina?"
+    - text: "Claro, de cuál remedio quieres saber?"
+    - text: "Sí, sólo dime cuál medicina?"
+
   utter_diagnostico:
     - text: "Ésto fue lo que dijo el doctor. {diagnostico}. \n
         \n

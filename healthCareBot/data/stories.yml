@@ -1,6 +1,12 @@
 version: "3.1"
 
 stories:
+  - story: ask for horario medicina
+    steps:
+      - intent: ask_horario_medicina
+      - action: utter_cual_medicina
+      - intent: inform_nombre_medicina
+
   - story: ask for diagnostico
     steps:
       - intent: ask_for_diagnostico

@@ -1,6 +1,22 @@
 version: "3.1"
 
 nlu:
+  - intent: ask_horario_medicina
+    examples: |
+      - quiero saber el horario de mis medicinas
+      - podrías darme los horarios de los remedios
+      - dame los horarios
+      - necesito las horas
+      - horas
+      - horarios
+      - dame las horas en que debo tomar los remedios
+      - a qué hora tomo el remedio?
+      - necesito los horarios en que debo tomar las medicinas
+      - horarios remedios
+      - hora de las medicinas
+      - hora de los remedios
+      - horario en que tomo las medicinas
+
   # AQUÍ VAN LAS MEDICINAS, DOSIS Y FRECUENCIA
   - intent: ask_for_dosis
     examples: |
@@ -63,6 +79,19 @@ nlu:
       - [4396850395](rut)
       - aquí está [5483729558](rut)
       - sí, [2109575832](rut)
+
+  - intent: inform_nombre_medicina
+    examples: |
+      - de la [diazepam](medicina)
+      - [aspirina](medicina)
+      - de [Omeprazol](medicina)
+      - [Fexofenadina](medicina)
+      - [loperamida](medicina)
+      - [fluticasona](medicina)
+      - [corticoides](medicina)
+      - [Aciclovir](medicina)
+      - [ritonavir](medicina)
+      - [metronidazol](medicina)
 
   - intent: inform_age
     examples: |

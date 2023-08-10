@@ -231,7 +231,7 @@ class Tratatamiento(Action):
         # crea tabla gestionMedicamentos
         cur.execute("CREATE TABLE IF NOT EXISTS gestionMedicamentos (userID VARCHAR(36) NOT NULL, datos TEXT)")
 
-        cur.execute("SELECT * FROM gestionMedicamentos WHERE userID=?", (userID, ))
+        cur.execute("SELECT datos FROM gestionMedicamentos WHERE userID=?", (userID, ))
         datos = cur.fetchall()
 
         # sacar de JSON los datos para transformarlos en objeto nuevamente
@@ -334,6 +334,7 @@ class Tratatamiento(Action):
         hashedRut = None
         userID = None
         if rut:
+            # 
             hashedRut = validate.generar_hash(rut)            
             for dato in datos:
                 dat = json.loads(dato[0])
@@ -345,16 +346,26 @@ class Tratatamiento(Action):
             datosmedicinas = self.nombreDatosMedicina(self, userID)
 
         # recupera slot nombreMedicina
-        nombremedicina = tracker.get_slot("medicina")       
+        nombremedicina = tracker.get_slot("medicina")
+        print('NOMBRE MEDICINA: ', nombremedicina)       
 
         if nombremedicina: 
             datosmedicina = datosmedicinas[nombremedicina]
             # recupera datos de inicio del tratammiento
             info_inicio_tratamiento = self.extraeDatosInicioMedicinas(userID, nombremedicina)
+            info_inicio_tratamiento = json.loads(info_inicio_tratamiento[0][0])
+            if nombremedicina not in self.keylist(info_inicio_tratamiento): 
+                # print("No tenemos información del Horario de esa medicina")
+                dispatcher.utter_message(template = "utter_show_age", age="CHORO LOCO")
+            
+
+            
+            print('INFO: ', info_inicio_tratamiento)
+            
             # condicional: si no hay datos, se llama función para insertar información
             if len(info_inicio_tratamiento) == 0:
                 # guarda = guardaDatosInicioMedicinas(userID, nombreMedicina, diaInicio, horaInicio, datosMedicina)
-                guarda = self.guardaDatosInicioMedicinas(userID, nombremedicina, '2023, 8, 12', '12:00', datosmedicina)
+                guarda = self.guardaDatosInicioMedicinas(userID, nombremedicina, '2023, 8, 15', '12:00', datosmedicina)
 
 
         # print(info_inicio_tratamiento)

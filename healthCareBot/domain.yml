@@ -30,6 +30,7 @@ entities:
 slots:
   medicina:
     type: text
+    influence_conversation: false
     mappings:
       - type: from_entity
         entity: medicina
@@ -89,6 +90,9 @@ forms:
       - rut
 
 responses:
+  utter_digita_letra:
+    - text: "Digita la letra 'c' y presiona Enter para continuar"
+
   utter_cual_medicina:
     - text: "El horario de cuál medicina?"
     - text: "Claro, de cuál remedio quieres saber?"

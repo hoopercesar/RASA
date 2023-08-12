@@ -6,6 +6,8 @@ stories:
       - intent: ask_horario_medicina
       - action: utter_cual_medicina
       - intent: inform_nombre_medicina
+      - action: utter_digita_letra
+      - action: utter_show_age
 
   - story: ask for diagnostico
     steps:

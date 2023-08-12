@@ -143,11 +143,11 @@ responses:
     - text: "Ha sido de ayuda?"
 
   utter_happy:
-    - text: "Bien... excelente"
+    - text: "Bien. Excelente"
 
   utter_show_age:
     - text: "tu edad es {age} años"
-    - text: "tienes {age} años"
+    - text: "tienes {age} "
 
   utter_goodbye:
     - text: "Hasta la próxima, "

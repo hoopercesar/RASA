@@ -92,6 +92,8 @@ nlu:
       - [Aciclovir](medicina)
       - [ritonavir](medicina)
       - [metronidazol](medicina)
+      - [antigripal](medicina)
+      - [glicopirrolato](medicina)
 
   - intent: inform_age
     examples: |

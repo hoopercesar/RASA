@@ -161,7 +161,7 @@ class Tratatamiento(Action):
     
         return keylist   
 
-    # retorna diccionario {nombreMedicina: [datos de tratamiento], ... }
+    # retorna objeto {nombreMedicina: [datos de tratamiento], ... }
     @staticmethod
     def nombreDatosMedicina(self, userID):
         path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
@@ -190,7 +190,7 @@ class Tratatamiento(Action):
     
     # este método guarda datos de inicio de tratamiento en DB/tabla->gestionMedicamentos
     @staticmethod
-    def guardaDatosInicioMedicinas(userID, nombreMedicina, diaInicio, horaInicio, datosMedicina):
+    def guardaDatosInicioMedicinas(self, userID):
         '''
         nombreMedicina: string -> nombre de la medicina
         userID: ID del usuario
@@ -202,11 +202,18 @@ class Tratatamiento(Action):
         userID | {'nombreMedicina': [diaInicio, horaInicio, ['dosis', freq, duracion]], 'nombreMedicina2':[...etc]}
 
         '''
+        objeto = self.nombreDatosMedicina(self, userID)
+        listaMedicinas = self.keylist(objeto)
+        diaInicio = '2023, 8, 11'
+        horaInicio = '8:00'
         datos = {}
-        datos[nombreMedicina] = [diaInicio, horaInicio, datosMedicina]
+        for nombreMedicina in listaMedicinas:
+            datos[nombreMedicina] = [diaInicio, horaInicio, objeto[nombreMedicina]]
+        
 
         # pasar datos a JSON
         datos = json.dumps(datos)
+
 
         path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
         con = sqlite3.connect(path, check_same_thread=False)
@@ -233,6 +240,7 @@ class Tratatamiento(Action):
 
         cur.execute("SELECT datos FROM gestionMedicamentos WHERE userID=?", (userID, ))
         datos = cur.fetchall()
+        datos = json.loads(datos[0][0])
 
         # sacar de JSON los datos para transformarlos en objeto nuevamente
 
@@ -240,8 +248,26 @@ class Tratatamiento(Action):
         # if datos[nombreMedicina]:
         #     datosInicio = datos[nombreMedicina]
 
-        return datos
+        return datos[nombreMedicina]
 
+    @staticmethod
+    def extraeUserID(rut):
+        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
+        con = sqlite3.connect(path, check_same_thread=False)
+        cur = con.cursor()
+
+        cur.execute("SELECT * FROM datospersonales")
+        datos = cur.fetchall()
+
+        validate = ValidateRut()
+        hashedRut = validate.generar_hash(rut)            
+        for dato in datos:
+            dat = json.loads(dato[0])
+            if (hashedRut == validate.keylist(dat)[0]):
+                paciente = dat[hashedRut]
+
+
+        return paciente['userID']
 
 
     @staticmethod
@@ -317,59 +343,25 @@ class Tratatamiento(Action):
                domain: DomainDict) -> Dict[Text, Any]:
 
        
-        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
-        con = sqlite3.connect(path, check_same_thread=False)
-        cur = con.cursor()
+        # guarda datos para gestión de Medicinas tabla-> gestionmedicinas
+        # ruts = ['8291686-5', '13280465-6', '17396829-9', '12658439-3', '20502458-1', '41332344-4']       
+        # for rut in ruts:
+        #     userID = self.extraeUserID(rut)
+        #     noReturn = self.guardaDatosInicioMedicinas(self, userID)
 
-        cur.execute("SELECT * FROM datospersonales")
-        datos = cur.fetchall()
-        
-
-        # print(medicina)
-
-
+        # extracción de Slots
         rut = tracker.get_slot("rut")
-        validate = ValidateRut()
-        paciente = None
-        hashedRut = None
-        userID = None
-        if rut:
-            # 
-            hashedRut = validate.generar_hash(rut)            
-            for dato in datos:
-                dat = json.loads(dato[0])
-                if (hashedRut == validate.keylist(dat)[0]):
-                    paciente = dat[hashedRut]
-                    userID = paciente['userID']
+        nombremedicina = tracker.get_slot("medicina")  
 
-            # obtiene objeto {nombreMedicina: [datos tratamiento]}
-            datosmedicinas = self.nombreDatosMedicina(self, userID)
-
-        # recupera slot nombreMedicina
-        nombremedicina = tracker.get_slot("medicina")
-        print('NOMBRE MEDICINA: ', nombremedicina)       
-
-        if nombremedicina: 
-            datosmedicina = datosmedicinas[nombremedicina]
-            # recupera datos de inicio del tratammiento
-            info_inicio_tratamiento = self.extraeDatosInicioMedicinas(userID, nombremedicina)
-            info_inicio_tratamiento = json.loads(info_inicio_tratamiento[0][0])
-            if nombremedicina not in self.keylist(info_inicio_tratamiento): 
-                # print("No tenemos información del Horario de esa medicina")
-                dispatcher.utter_message(template = "utter_show_age", age="CHORO LOCO")
-            
-
-            
-            print('INFO: ', info_inicio_tratamiento)
-            
-            # condicional: si no hay datos, se llama función para insertar información
-            if len(info_inicio_tratamiento) == 0:
-                # guarda = guardaDatosInicioMedicinas(userID, nombreMedicina, diaInicio, horaInicio, datosMedicina)
-                guarda = self.guardaDatosInicioMedicinas(userID, nombremedicina, '2023, 8, 15', '12:00', datosmedicina)
-
-
-        # print(info_inicio_tratamiento)
-
+        if rut: 
+            userID = self.extraeUserID(rut)
+            objeto = self.nombreDatosMedicina(self, userID)
+            if nombremedicina: 
+                info_inicio_medicina = self.extraeDatosInicioMedicinas(userID, nombremedicina)
+                hora = info_inicio_medicina[2]
+                print(type(hora), hora)
+        
+                    
 
         horarios = self.creaHorarios('2023,8,8', '8:00', ['100mg', 3, 5])
         # print(horarios)
@@ -414,3 +406,19 @@ class CreaHorarioMedicinas(Action):
 
 
 # esta clase crea y administra los horarios de cada medicina
+
+
+
+# DESCRIPCIÓN DE PROCEDIMIENTOS
+
+# Procedimiento para desplegar horarios de medicinas a usuarios.
+# los usuario se crean automáticamente con fecha actual y hora 8:00 
+#1 con el rut se consulta el tabla que contiene gestionTratamiento
+#1.5 hay que usar el inversor de JSON -> json.loads()
+#2 con nombremedicina se filtra sólo la medicina deseada. 
+#3 se ingresan los parámetros de inicio tratamiento a función crea horarios
+#4 se despliegan los horarios. 
+
+# Procedimieno para cambiar fecha/hora de inicio tratamiento
+#1 usuario solicita cambiar horario con palabra clave cambio de horario 
+# para activar funciones de cambio de horarios

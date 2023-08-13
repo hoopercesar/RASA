@@ -17,6 +17,7 @@ intents:
   - inform_age
   - ask_horario_medicina
   - inform_nombre_medicina
+  - inform_letra
   # - request_tratamiento_form
   # - request_horarios_form
 
@@ -146,8 +147,8 @@ responses:
     - text: "Bien. Excelente"
 
   utter_show_age:
-    - text: "tu edad es {age} años"
-    - text: "tienes {age} "
+    - text: "tu edad es años"
+    - text: "tienes "
 
   utter_goodbye:
     - text: "Hasta la próxima, "
@@ -159,8 +160,12 @@ responses:
         Puedo entregar información de tu diagnóstico, medicinas, dosis y horarios.\n"
 
   utter_submit:
-    - text: "Estoy procesando su informacióm... {usuarioInfo}"
-    - text: "Procesando tu información... {usuarioInfo}"
+    - text: "Estoy procesando su informacióm ('~')"
+    - text: "Procesando tu información."
+
+  utter_show_horarios:
+    - text: "Éstos son los horarios la medicina que solicitaste \n {usuarioInfo}"
+    - text: "Los horarios de la medicina que pediste  \n {usuarioInfo}"
 
   utter_rut_slots:
     - text: " Hola, {nombre}.\n

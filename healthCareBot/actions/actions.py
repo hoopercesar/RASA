@@ -230,7 +230,7 @@ class Tratatamiento(Action):
     
     # método que extrae información de gestión de medicamentos de DB/tabla->gestionMedicamentos
     @staticmethod
-    def extraeDatosInicioMedicinas(userID, nombreMedicina):
+    def extraeDatosInicioMedicinas(userID):
         path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
         con = sqlite3.connect(path, check_same_thread=False)
         cur = con.cursor()
@@ -248,7 +248,7 @@ class Tratatamiento(Action):
         # if datos[nombreMedicina]:
         #     datosInicio = datos[nombreMedicina]
 
-        return datos[nombreMedicina]
+        return datos
 
     @staticmethod
     def extraeUserID(rut):
@@ -268,6 +268,19 @@ class Tratatamiento(Action):
 
 
         return paciente['userID']
+    
+    @staticmethod
+    def actualizaDatos(userID, datos):
+        path = 'C:/Users/Cesar Hooper/Documents/STARTUP/datapacientes.db'
+        con = sqlite3.connect(path, check_same_thread=False)
+        cur = con.cursor()
+        # f"UPDATE empleados SET salario = ? WHERE id = ?"
+        cur.execute("UPDATE gestionMedicamentos SET datos=? WHERE userID=?", (datos, userID))
+        datos = cur.fetchall()
+
+        con.commit()
+
+        return []
 
 
     @staticmethod
@@ -343,27 +356,39 @@ class Tratatamiento(Action):
                domain: DomainDict) -> Dict[Text, Any]:
 
        
-        # guarda datos para gestión de Medicinas tabla-> gestionmedicinas
-        # ruts = ['8291686-5', '13280465-6', '17396829-9', '12658439-3', '20502458-1', '41332344-4']       
+        # # guarda datos para gestión de Medicinas tabla-> gestionmedicinas
+        # ruts = ['8291686-5', '13280465-6', '17396829-9', '13109915-0','12658439-3', '20502458-1', '41332344-4']       
         # for rut in ruts:
         #     userID = self.extraeUserID(rut)
         #     noReturn = self.guardaDatosInicioMedicinas(self, userID)
 
         # extracción de Slots
         rut = tracker.get_slot("rut")
-        nombremedicina = tracker.get_slot("medicina")  
+        nombremedicina = tracker.get_slot("medicina")
+        # fechainicio = '2023, 8, 13'
+        # horainicio = '10:37' 
+        cambioHorario = False
+        horarios = "Aun no hay información de HORARIOS"
 
         if rut: 
             userID = self.extraeUserID(rut)
             objeto = self.nombreDatosMedicina(self, userID)
             if nombremedicina: 
-                info_inicio_medicina = self.extraeDatosInicioMedicinas(userID, nombremedicina)
-                hora = info_inicio_medicina[2]
-                print(type(hora), hora)
-        
-                    
+                info_inicio_medicina = self.extraeDatosInicioMedicinas(userID)
+                fechainicio = info_inicio_medicina[nombremedicina][0]
+                horainicio = info_inicio_medicina[nombremedicina][1]
+                datosmedicina = info_inicio_medicina[nombremedicina][2]
 
-        horarios = self.creaHorarios('2023,8,8', '8:00', ['100mg', 3, 5])
+                # datos = json.dumps(info_inicio_medicina)
+                # noReturn = self.actualizaDatos(userID, datos)
+
+                if fechainicio and horainicio and datosmedicina: 
+                    print(fechainicio, horainicio, datosmedicina)
+                    horarios = self.creaHorarios(fechainicio, horainicio, datosmedicina)
+                    
+                
+        
+        
         # print(horarios)
                 
         return [SlotSet("usuarioInfo", horarios)]

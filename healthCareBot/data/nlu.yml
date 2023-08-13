@@ -101,6 +101,15 @@ nlu:
       - tengo [27](age) años
       - [47](age) años
 
+  - intent: inform_letra
+    examples: |
+      - c
+      - p
+      - m
+      - C
+      - x
+      - v
+
   - intent: greet
     examples: |
       - hola

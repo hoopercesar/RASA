@@ -1,13 +1,27 @@
 version: "3.1"
 
 stories:
-  - story: ask for horario medicina
+  - story: change horarios
+    steps:
+      - intent: ask_change_horarios
+      - action: utter_cual_medicina
+      - intent: inform_nombre_medicina
+      - action: utter_ask_fecha_inicio
+      - intent: inform_fecha_inicio
+      - action: utter_ask_hora_inicio
+      - intent: inform_hora_inicio
+      - action: utter_digita_letra
+      - intent: inform_letra
+      - action: utter_show_horarios
+
+  - story: ask for horario
     steps:
       - intent: ask_horario_medicina
       - action: utter_cual_medicina
       - intent: inform_nombre_medicina
       - action: utter_digita_letra
-      - action: utter_show_age
+      - intent: inform_letra
+      - action: utter_show_horarios
 
   - story: ask for diagnostico
     steps:

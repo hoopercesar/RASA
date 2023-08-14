@@ -18,6 +18,9 @@ intents:
   - ask_horario_medicina
   - inform_nombre_medicina
   - inform_letra
+  - ask_change_horarios
+  - inform_fecha_inicio
+  - inform_hora_inicio
   # - request_tratamiento_form
   # - request_horarios_form
 
@@ -25,8 +28,9 @@ entities:
   - rut
   - age
   - medicina
-  # - tratamiento
-  # - horarios
+  - fecha_inicio
+  - hora_inicio
+  - cambiar
 
 slots:
   medicina:
@@ -35,6 +39,27 @@ slots:
     mappings:
       - type: from_entity
         entity: medicina
+
+  fecha_inicio:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: fecha_inicio
+
+  hora_inicio:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: hora_inicio
+
+  cambiar:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: cambiar
 
   rut:
     type: text
@@ -98,6 +123,15 @@ responses:
     - text: "El horario de cuál medicina?"
     - text: "Claro, de cuál remedio quieres saber?"
     - text: "Sí, sólo dime cuál medicina?"
+
+  utter_ask_fecha_inicio:
+    - text: "Escribe la fecha de inicio (en formato dia/mes/año = 25/4/2023)"
+    - text: "Digita la fecha de inicio de tu tratamiento (en formato dia/mes/año = 25/4/2023)"
+    - text: "Dame la fecha en que deseas iniciar tu tratamiento (en formato dia/mes/año = 25/4/2023)"
+
+  utter_ask_hora_inicio:
+    - text: "Digita la hora de inicio del tratamiento (En formato hh:mm = 18:10)"
+    - text: "Ingresa la hora en que vas a iniciar tu tratamiento (En formato hh:mm = 18:10)"
 
   utter_diagnostico:
     - text: "Ésto fue lo que dijo el doctor. {diagnostico}. \n
@@ -170,6 +204,7 @@ responses:
   utter_rut_slots:
     - text: " Hola, {nombre}.\n
         Puedes ofrecerte información sobre de tu diagnóstico, medicinas, dosis y horarios.\n
+        Si quieres cambiar las horas de las dosis de tus medicinas dime: quiero cambiar las horas.
         En qué te puedo ayudar?"
 
 session_config:

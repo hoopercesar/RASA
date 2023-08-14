@@ -365,30 +365,45 @@ class Tratatamiento(Action):
         # extracción de Slots
         rut = tracker.get_slot("rut")
         nombremedicina = tracker.get_slot("medicina")
-        # fechainicio = '2023, 8, 13'
-        # horainicio = '10:37' 
-        cambioHorario = False
+
+        fechainicioNew = tracker.get_slot("fecha_inicio")
+        horainicioNew = tracker.get_slot("hora_inicio")
+        cambiar = tracker.get_slot("cambiar")
+
+        if cambiar:
+            change = True
+        else:
+            change = False
+
+       
         horarios = "Aun no hay información de HORARIOS"
 
         if rut: 
             userID = self.extraeUserID(rut)
             objeto = self.nombreDatosMedicina(self, userID)
             if nombremedicina: 
-                info_inicio_medicina = self.extraeDatosInicioMedicinas(userID)
-                fechainicio = info_inicio_medicina[nombremedicina][0]
-                horainicio = info_inicio_medicina[nombremedicina][1]
-                datosmedicina = info_inicio_medicina[nombremedicina][2]
-
-                # datos = json.dumps(info_inicio_medicina)
-                # noReturn = self.actualizaDatos(userID, datos)
-
-                if fechainicio and horainicio and datosmedicina: 
-                    print(fechainicio, horainicio, datosmedicina)
-                    horarios = self.creaHorarios(fechainicio, horainicio, datosmedicina)
                     
+                    # estos comandos cambian fechas/horas de inicio si switch está encendido
+                    if (change == True):
+                        newFecha = fechainicioNew.split('/')
+                        fechaNew = newFecha[2] + ',' + newFecha[1] + ',' + newFecha[0]
+                        info_inicio_medicina = self.extraeDatosInicioMedicinas(userID)
+                        info_inicio_medicina[nombremedicina][0] = fechaNew
+                        info_inicio_medicina[nombremedicina][1] = horainicioNew
+                        datos = json.dumps(info_inicio_medicina)
+                        noReturn = self.actualizaDatos(userID, datos)
+
+                        print("Se realizaron los cambios")
+
+                    # recupera fechas/hora de inicio para mostrar horarios a usuario
+                    info_inicio_medicina = self.extraeDatosInicioMedicinas(userID)
+                    fechainicio = info_inicio_medicina[nombremedicina][0]
+                    horainicio = info_inicio_medicina[nombremedicina][1]
+                    datosmedicina = info_inicio_medicina[nombremedicina][2]
+
+                    if fechainicio and horainicio and datosmedicina: 
+                        horarios = self.creaHorarios(fechainicio, horainicio, datosmedicina)                  
                 
-        
-        
         # print(horarios)
                 
         return [SlotSet("usuarioInfo", horarios)]

@@ -95,6 +95,39 @@ nlu:
       - [antigripal](medicina)
       - [glicopirrolato](medicina)
 
+  - intent: ask_change_horarios
+    examples: |
+      - quiero [cambiar](cambiar) el horario 
+      - cómo puedo hacer un [cambio](cambiar) en el día y la hora
+      - necesito [cambiar](cambiar) los horarios
+      - [cambio](cambiar) horas de las medicinas
+      - hacer unos [cambios](cambiar) de horas
+      - para realizar [cambios](cambiar) de horarios?
+      - [alterar](cambiar) las horas de los remedis
+      - tengo que hacer algunas [alteraciones](cambiar) en las horas
+      - cómo puedo [alterar](cambiar) las horas de mis remedios??
+      - podrías ayudarme a [variar](cambiar) las horas?
+      - [variar](cambiar)
+
+  - intent: inform_fecha_inicio
+    examples: |
+      - [13/12/2023](fecha_inicio)
+      - el día de inicio [23/08/2024](fecha_inicio) 
+      - [1/1/2022](fecha_inicio)
+      - [04/05/2023](fecha_inicio)
+      - [20/02/2021](fecha_inicio)
+
+  - intent: inform_hora_inicio
+    examples: |
+      - [8:00](hora_inicio)
+      - [12:00](hora_inicio)
+      - [13:15](hora_inicio)
+      - [17:22](hora_inicio)
+      - [21:12](hora_inicio)
+      - [23:07](hora_inicio)
+      - [7:30](hora_inicio)
+      - [22:47](hora_inicio)
+
   - intent: inform_age
     examples: |
       - mi edad es [32](age) años

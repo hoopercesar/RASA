@@ -370,7 +370,7 @@ class Tratatamiento(Action):
         horainicioNew = tracker.get_slot("hora_inicio")
         cambiar = tracker.get_slot("cambiar")
 
-        if cambiar:
+        if cambiar and fechainicioNew and horainicioNew:
             change = True
         else:
             change = False
@@ -385,8 +385,8 @@ class Tratatamiento(Action):
                     
                     # estos comandos cambian fechas/horas de inicio si switch está encendido
                     if (change == True):
-                        newFecha = fechainicioNew.split('/')
-                        fechaNew = newFecha[2] + ',' + newFecha[1] + ',' + newFecha[0]
+
+                        fechaNew = ','.join([k for k in fechainicioNew.split('/')[::-1]])
                         info_inicio_medicina = self.extraeDatosInicioMedicinas(userID)
                         info_inicio_medicina[nombremedicina][0] = fechaNew
                         info_inicio_medicina[nombremedicina][1] = horainicioNew

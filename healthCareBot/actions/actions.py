@@ -159,7 +159,34 @@ class Tratatamiento(Action):
         for k in dicc:
             keylist.append(k)
     
-        return keylist   
+        return keylist
+
+    # esta función da estilo a la salida de los horarios de las medicinas 
+    # consultados por usuario
+    @staticmethod
+    def estiloHorarios(horarios):
+        dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
+        meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 
+                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']    
+    
+        # la fecha actual 
+        date = datetime.datetime.now()
+        diaSemana = dias[date.weekday()]
+        mesYear = meses[date.month-1]
+        dateHoy = date.strftime("%Y-%m-%d")
+        diaMes = date.strftime("%d")
+        # hora = date.strftime("%H:%m")
+    
+        hours = []
+        texto = f"Hoy {diaSemana} {diaMes} de {mesYear} debes tomar la medicina en estos horarios: "
+        for horario in horarios:
+            if horario.split(' ')[0] == dateHoy:
+                hours.append(horario.split(" ")[1])
+        
+        # preparación del mensaje de salida
+        mensaje = texto + ', '.join([k for k in hours])
+
+        return mensaje   
 
     # retorna objeto {nombreMedicina: [datos de tratamiento], ... }
     @staticmethod
@@ -402,7 +429,8 @@ class Tratatamiento(Action):
                     datosmedicina = info_inicio_medicina[nombremedicina][2]
 
                     if fechainicio and horainicio and datosmedicina: 
-                        horarios = self.creaHorarios(fechainicio, horainicio, datosmedicina)                  
+                        horas = self.creaHorarios(fechainicio, horainicio, datosmedicina)
+                        horarios = self.estiloHorarios(horas)                  
                 
         # print(horarios)
                 

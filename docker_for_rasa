@@ -1,0 +1,36 @@
+# RASA DOCKER
+
+# testeando rasa default con docker!
+
+# crear dockerfile con las siguientes instrucciones
+########################################
+FROM python:3.8.18-slim
+
+RUN python -m pip install rasa
+
+WORKDIR /testbot
+COPY . .
+
+RUN rasa train nlu
+
+USER 1001
+
+ENTRYPOINT ["rasa"]
+
+CMD ["run", "--enable-api", "--port", "8080"]
+
+#################################
+# luego crear la imagen 
+docker build -t image_NAME .
+
+# correr el contenedor
+docker run -it -p 8080:8080 image_NAME
+
+# para testear en postman:
+# en Environments --> New Environment 
+ --> Variable: baseUrl
+ --> Type: default
+ --> Initial VAlue: localhost:8080
+ --> Current value: localhost:8080 
+
+# en el localhost:8080 ===> Hello from Rasa: 3.6.10
